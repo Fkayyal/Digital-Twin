@@ -1,0 +1,111 @@
+### Spring Initializr defaults ###
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+
+### OS files ###
+.DS_Store
+Thumbs.db
+
+
+### Java build artifacts ###
+out/
+*.class
+*.jar
+*.war
+*.ear
+
+
+### Maven (extra) ###
+.mvn/wrapper/maven-wrapper.properties
+.mvn/wrapper/MavenWrapperDownloader.java
+.mvn/timing.properties
+# Maven local settings should stay local
+.settings.xml
+
+
+### Logs and temp ###
+logs/
+log/
+*.log
+tmp/
+temp/
+hs_err_pid*
+replay_pid*
+
+
+### Spring Boot config / secrets ###
+# Lokale overrides en env-bestanden niet committen
+application-*.yml.local
+application-*.yaml.local
+application-*.properties.local
+.env
+.env.*
+
+
+### Node (optionele frontend) ###
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+### Coverage / reports ###
+coverage/
+.site/
+.jacoco/
+jacoco.exec
+surefire-reports/
+failsafe-reports/
+
+
+### Cache directories ###
+.cache/
+.gradle/
+.bazel/
+.npm/
+yarn-cache/
+pnpm-store/
+
+
+### Editor swaps/backups ###
+*~
+*.swp
+*.swo
+*.orig
+*.rej
+
+
+### Generated code / artifacts ###
+generated/
