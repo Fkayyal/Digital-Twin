@@ -131,6 +131,7 @@ export class PolygonDrawer {
         handler.setInputAction(function (event) {
             that.activeShapePoints.pop();
             that.drawShape(that.activeShapePoints);
+            sendPolygonToBackend(that.activeShapePoints, 10);
             that.viewer.entities.remove(that.floatingPoint);
             that.viewer.entities.remove(that.activeShape);
             that.floatingPoint = undefined;
@@ -157,4 +158,22 @@ export class PolygonDrawer {
         }
         this.activeShapePoints = [];
     }
+}
+
+function sendPolygonToBackend(points, height) {
+    // points = array van Cartesian3 → omzetten naar simpele x,y,z
+    const simplePoints = points.map(p => {
+        return { x: p.x, y: p.y, z: p.z };
+    });
+
+    const pointsJsonString = JSON.stringify(simplePoints);
+
+    fetch('http://localhost:8080/api/polygons', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            height: height,
+            pointsJson: pointsJsonString
+        })
+    });
 }
