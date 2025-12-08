@@ -104,17 +104,21 @@ export class PolygonDrawer {
             }
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
-        //  CTRL + LEFT_CLICK → Polygon extrude-hoogte functie
+        // CTRL + LEFT_CLICK → Polygon extrude-hoogte functie, skip "Spoordok"
         handler.setInputAction(function (event) {
             var pickedObject = that.viewer.scene.pick(event.position);
             if (Cesium.defined(pickedObject)) {
                 var entity = that.viewer.entities.getById(pickedObject.id.id);
-                // entity.polygon.material.color = Cesium.Color.YELLOW;
-                that.create3DObject(entity, 10);
-                console.log(entity);
-                // Optionally, highlight the polygon or show any other UI feedback
+                // Skip als het de "Spoordok" polygon is
+                if (entity && entity.name !== "Spoordok") {
+                    that.create3DObject(entity, 10);
+                    console.log("Hoogte aangepast:", entity.name);
+                } else if (entity && entity.name === "Spoordok") {
+                    console.log("Kan 'Spoordok' niet verhogen");
+                }
             }
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK, Cesium.KeyboardEventModifier.CTRL);
+
 
         handler.setInputAction(function (event) {
             if (Cesium.defined(that.floatingPoint)) {
@@ -131,13 +135,30 @@ export class PolygonDrawer {
         handler.setInputAction(function (event) {
             that.activeShapePoints.pop();
             that.drawShape(that.activeShapePoints);
-            sendPolygonToBackend(that.activeShapePoints, 10);
             that.viewer.entities.remove(that.floatingPoint);
             that.viewer.entities.remove(that.activeShape);
             that.floatingPoint = undefined;
             that.activeShape = undefined;
             that.activeShapePoints = [];
         }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
+
+        // ALT + LEFT_CLICK → Polygon delete function, skip "Spoordok"
+        handler.setInputAction(function (event) {
+            var pickedObject = that.viewer.scene.pick(event.position);
+            if (Cesium.defined(pickedObject)) {
+                var entity = that.viewer.entities.getById(pickedObject.id.id);
+                if (entity) {
+                    // Skip als het de "Spoordok" polygon is
+                    if (entity.name !== "Spoordok") {
+                        that.viewer.entities.remove(entity);
+                        console.log("Entity removed:", entity);
+                    } else {
+                        console.log("Kan 'Spoordok' niet verwijderen");
+                    }
+                }
+            }
+        }, Cesium.ScreenSpaceEventType.LEFT_CLICK, Cesium.KeyboardEventModifier.ALT);
+
     }
 
     create3DObject(basePolygon, height) {
@@ -158,22 +179,4 @@ export class PolygonDrawer {
         }
         this.activeShapePoints = [];
     }
-}
-
-function sendPolygonToBackend(points, height) {
-    // points = array van Cartesian3 → omzetten naar simpele x,y,z
-    const simplePoints = points.map(p => {
-        return { x: p.x, y: p.y, z: p.z };
-    });
-
-    const pointsJsonString = JSON.stringify(simplePoints);
-
-    fetch('http://localhost:8080/api/polygons', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            height: height,
-            pointsJson: pointsJsonString
-        })
-    });
 }
