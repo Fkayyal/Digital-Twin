@@ -1,12 +1,13 @@
-package com.leeuwarden.Digital.Twin;
+package com.leeuwarden.Digital.Twin.DTO;
 
-import java.util.List;
-
-public class PolygonRequest {
+//Dit is het request‑pakketje van de frontend naar de backend.
+//Het zegt: “dit stuurt de browser naar de server als ik een nieuwe polygoon opsla”
+// → velden: height, pointsJson (geen id, want die maakt de database).
+public class PolygonRequestDTO {
     private double height;
     private String pointsJson;
 
-    public PolygonRequest() {}
+    public PolygonRequestDTO() {}
 
     public double getHeight() {
         return height;

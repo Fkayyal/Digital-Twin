@@ -1,15 +1,18 @@
 package com.leeuwarden.Digital.Twin.controller;
 
-import com.leeuwarden.Digital.Twin.PolygonRequest;
+import com.leeuwarden.Digital.Twin.DTO.PolygonRequestDTO;
 import com.leeuwarden.Digital.Twin.entity.Polygon;
 import com.leeuwarden.Digital.Twin.repository.PolygonRepository;
 import org.springframework.web.bind.annotation.*;
 
-
+//Dit is de API‑laag.
+//Het zegt: “als er een POST naar /api/polygons komt met een PolygonRequest,
+// dan maak ik een Polygon aan en sla ik die via PolygonRepository op in de database”.
 @RestController
 @RequestMapping("/api/polygons")
 @CrossOrigin(origins = "http://localhost:63342")
 public class PolygonController {
+    // Dependancy injection
     private final PolygonRepository polygonRepository;
 
     public PolygonController(PolygonRepository polygonRepository) {
@@ -17,10 +20,10 @@ public class PolygonController {
     }
 
     @PostMapping
-    public Polygon createPolygon(@RequestBody PolygonRequest polygonRequest) {
+    public Polygon createPolygon(@RequestBody PolygonRequestDTO polygonRequestDTO) {
         Polygon polygon = new Polygon();
-        polygon.setHeight(polygonRequest.getHeight());
-        polygon.setPointsJson(polygonRequest.getPointsJson()); // direct overnemen
+        polygon.setHeight(polygonRequestDTO.getHeight());
+        polygon.setPointsJson(polygonRequestDTO.getPointsJson());
 
         return polygonRepository.save(polygon);
     }
