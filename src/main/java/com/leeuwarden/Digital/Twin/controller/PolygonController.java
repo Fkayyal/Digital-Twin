@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 //Het zegt: “als er een POST naar /api/polygons komt met een PolygonRequest,
 // dan maak ik een Polygon aan en sla ik die via PolygonRepository op in de database”.
 @RestController
-@RequestMapping("/api/polygons")
+@RequestMapping("/polygons")
 @CrossOrigin(origins = "http://localhost:63342")
 public class PolygonController {
     // Dependancy injection
@@ -22,7 +22,6 @@ public class PolygonController {
     @PostMapping
     public Polygon createPolygon(@RequestBody PolygonRequestDTO polygonRequestDTO) {
         Polygon polygon = new Polygon();
-        polygon.setHeight(polygonRequestDTO.getHeight());
         polygon.setPointsJson(polygonRequestDTO.getPointsJson());
 
         return polygonRepository.save(polygon);

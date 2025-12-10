@@ -135,7 +135,7 @@ export class PolygonDrawer {
         handler.setInputAction(function (event) {
             that.activeShapePoints.pop();
             that.drawShape(that.activeShapePoints);
-            sendPolygonToBackend(that.activeShapePoints, 10);
+            sendPolygonToBackend(that.activeShapePoints);
             that.viewer.entities.remove(that.floatingPoint);
             that.viewer.entities.remove(that.activeShape);
             that.floatingPoint = undefined;
@@ -182,15 +182,19 @@ export class PolygonDrawer {
     }
 }
 
-function sendPolygonToBackend(points, height) {
+function sendPolygonToBackend(points) {
+    // Cesium Cartesian3 → simpel object {x, y, z}.
+    // map: een array methode die elke element in de array langs gaat
+    // en daarvan een nieuwe object maakt, dit hij opslaat in een nieuwe array.
     const simplePoints = points.map(p => ({ x: p.x, y: p.y, z: p.z }));
+    // Maakt JSON-string van de objecten in de nieuwe array
     const pointsJsonString = JSON.stringify(simplePoints);
 
-    fetch('http://localhost:8080/api/polygons', {
+    fetch('http://localhost:8080/polygons', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        // Hier wordt zo’n JSON‑object gemaakt, dat door DTO wordt verwacht { "pointsJson": "..." }.
         body: JSON.stringify({
-            height: height,
             pointsJson: pointsJsonString
         })
     });

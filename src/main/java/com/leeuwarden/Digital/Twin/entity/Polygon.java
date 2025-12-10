@@ -7,7 +7,6 @@ public class Polygon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private double height;
     @Lob
     @Column(name = "points_json", columnDefinition = "TEXT")
     private String pointsJson;
@@ -31,11 +30,4 @@ public class Polygon {
         this.id = id;
     }
 
-    public double getHeight() {
-        return height;
-    }
-
-    public void setHeight(double height) {
-        this.height = height;
-    }
 }
