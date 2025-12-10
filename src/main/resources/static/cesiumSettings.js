@@ -1,6 +1,4 @@
-﻿// cesiumSettings.js
-
-export function initializeCesiumViewer(containerId) {
+﻿export function initializeCesiumViewer(containerId) {
     const west = 5.798212900532118;
     const south = 53.19304584690279;
     const east = 5.798212900532118;
