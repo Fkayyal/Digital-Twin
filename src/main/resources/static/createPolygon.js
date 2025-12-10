@@ -1,6 +1,4 @@
-﻿// createPolygon.js
-
-export class PolygonDrawer {
+﻿export class PolygonDrawer {
     constructor(viewer) {
         this.viewer = viewer;
         this.drawingMode = "polygon";
@@ -15,7 +13,7 @@ export class PolygonDrawer {
         const point = this.viewer.entities.add({
             position: worldPosition,
             point: {
-                color: Cesium.Color.BLUE,
+                color: Cesium.Color.BLACK,
                 pixelSize: 5,
                 heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
             },
@@ -38,7 +36,7 @@ export class PolygonDrawer {
                 polygon: {
                     hierarchy: positionData,
                     material: new Cesium.ColorMaterialProperty(
-                        Cesium.Color.RED.withAlpha(0.7),
+                        Cesium.Color.fromCssColorString('#2f3f36')
                     ),
                 },
             });
