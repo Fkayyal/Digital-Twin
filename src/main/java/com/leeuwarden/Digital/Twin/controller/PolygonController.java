@@ -19,6 +19,8 @@ public class PolygonController {
         this.polygonRepository = polygonRepository;
     }
 
+    // dit is eigenlijk een soort van mapper, die DTO omzet naar Entity.
+    // DTO --> Entity
     @PostMapping
     public Polygon createPolygon(@RequestBody PolygonRequestDTO polygonRequestDTO) {
         Polygon polygon = new Polygon();
