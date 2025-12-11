@@ -109,3 +109,6 @@ pnpm-store/
 
 ### Generated code / artifacts ###
 generated/
+
+## Database properties
+.properties
