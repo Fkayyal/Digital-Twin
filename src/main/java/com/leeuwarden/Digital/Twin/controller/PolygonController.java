@@ -29,4 +29,9 @@ public class PolygonController {
         return polygonRepository.save(polygon);
     }
 
+    @DeleteMapping("/{id}")
+    public void deletePolygon(@PathVariable Long id) {
+        polygonRepository.deleteById(id);
+    }
+
 }

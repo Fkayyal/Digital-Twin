@@ -1,4 +1,6 @@
-﻿export class PolygonDrawer {
+﻿
+
+export class PolygonDrawer {
     constructor(viewer) {
         this.viewer = viewer;
         this.drawingMode = "polygon";
@@ -6,6 +8,7 @@
         this.activeShape = undefined;
         this.floatingPoint = undefined;
         this.gridSize = 1.1;
+        this.pointEntities = [];
         this.setupInputActions();
     }
 
@@ -18,6 +21,8 @@
                 heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
             },
         });
+        // point wordt toegevoegd aan array
+        this.pointEntities.push(point)
         return point;
     }
 
@@ -132,8 +137,8 @@
 
         handler.setInputAction(function (event) {
             that.activeShapePoints.pop();
-            that.drawShape(that.activeShapePoints);
-            sendPolygonToBackend(that.activeShapePoints);
+            const finalPolygonEntity = that.drawShape(that.activeShapePoints)
+            sendPolygonToBackend(that.activeShapePoints, finalPolygonEntity);
             that.viewer.entities.remove(that.floatingPoint);
             that.viewer.entities.remove(that.activeShape);
             that.floatingPoint = undefined;
@@ -151,6 +156,17 @@
                     if (entity.name !== "Spoordok") {
                         that.viewer.entities.remove(entity);
                         console.log("Entity removed:", entity);
+                        // bijbehorende polygoonpunten werwijderen
+                        if(that.pointEntities && that.pointEntities.length > 0){
+                            that.pointEntities.forEach(p => that.viewer.entities.remove(p));
+                            that.pointEntities = [];
+                        }
+                        if (entity.polygonId) {
+                            fetch(`http://localhost:8080/polygons/${entity.polygonId}`, {
+                                method: 'DELETE'
+                            });
+                        }
+                        that.activeShapePoints = [];
                     } else {
                         console.log("Kan 'Spoordok' niet verwijderen");
                     }
@@ -180,7 +196,7 @@
     }
 }
 
-function sendPolygonToBackend(points) {
+function sendPolygonToBackend(points, cesiumEntity) {
     // Cesium Cartesian3 → simpel object {x, y, z}.
     // map: een array methode die elke element in de array langs gaat
     // en daarvan een nieuwe object maakt, dit hij opslaat in een nieuwe array.
@@ -195,5 +211,9 @@ function sendPolygonToBackend(points) {
         body: JSON.stringify({
             pointsJson: pointsJsonString
         })
-    });
+    })
+        .then(response => response.json())
+        .then(savedPolygon => {
+            cesiumEntity.polygonId = savedPolygon.id;
+        });
 }
