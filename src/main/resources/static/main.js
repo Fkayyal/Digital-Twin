@@ -11,6 +11,33 @@ function setup() {
     viewer = initializeCesiumViewer("cesiumContainer");
     polygonDrawer = new PolygonDrawer(viewer);
 
+    fetch('http://localhost:8080/polygons')
+        .then(r => r.json())
+        .then(polygons => {
+            polygons.forEach(p => {
+                // 1. pointsJson (String) -> array van {x,y,z}
+                const points = JSON.parse(p.pointsJson);
+
+                // 2. array -> Cesium.Cartesian3[]
+                const positions = points.map(pt =>
+                    new Cesium.Cartesian3(pt.x, pt.y, pt.z)
+                );
+
+                // 3. polygon tekenen in Cesium
+                const entity = viewer.entities.add({
+                    polygon: {
+                        hierarchy: positions,
+                        material: new Cesium.ColorMaterialProperty(
+                            Cesium.Color.fromCssColorString('#2f3f36')
+                        )
+                    }
+                });
+
+                // 4. database-id bewaren voor later verwijderen
+                entity.polygonId = p.id;
+            });
+        });
+
     //Spoordok polygon coordinates
     const coords = [
         5.787759928698073, 53.197831145908000,
