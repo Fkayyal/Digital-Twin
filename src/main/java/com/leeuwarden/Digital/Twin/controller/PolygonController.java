@@ -5,6 +5,8 @@ import com.leeuwarden.Digital.Twin.entity.Polygon;
 import com.leeuwarden.Digital.Twin.repository.PolygonRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 //Dit is de API‑laag.
 //Het zegt: “als er een POST naar /api/polygons komt met een PolygonRequest,
 // dan maak ik een Polygon aan en sla ik die via PolygonRepository op in de database”.
@@ -32,6 +34,11 @@ public class PolygonController {
     @DeleteMapping("/{id}")
     public void deletePolygon(@PathVariable Long id) {
         polygonRepository.deleteById(id);
+    }
+
+    @GetMapping
+    public List<Polygon> getPolygons() {
+        return polygonRepository.findAll();
     }
 
 }
