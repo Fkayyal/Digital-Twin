@@ -50,4 +50,10 @@ public class PolygonController {
         return polygonRepository.save(polygon);
     }
 
+    @GetMapping("/{id}")
+    public Polygon getPolygon(@PathVariable Long id) {
+        return polygonRepository.findById(id).orElseThrow();
+    }
+
+
 }
