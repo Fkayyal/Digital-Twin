@@ -8,6 +8,8 @@ public class PolygonRequestDTO {
 
     // de JSON‑body moet een property met deze naam hebben:
     private String pointsJson;
+    private String oppervlakte;
+    private double hoogte;
 
     public PolygonRequestDTO() {}
 
@@ -19,4 +21,15 @@ public class PolygonRequestDTO {
     public void setPointsJson(String pointsJson) {
         this.pointsJson = pointsJson;
     }
+
+    public String getOppervlakte() {
+        return oppervlakte;
+    }
+
+    public void setOppervlakte(String oppervlakte) {
+        this.oppervlakte = oppervlakte;
+    }
+
+    public double getHoogte() { return hoogte; }
+    public void setHoogte(double hoogte) { this.hoogte = hoogte; }
 }

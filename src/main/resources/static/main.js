@@ -29,7 +29,13 @@ function setup() {
                         hierarchy: positions,
                         material: new Cesium.ColorMaterialProperty(
                             Cesium.Color.fromCssColorString('#2f3f36')
-                        )
+                        ),
+                        extrudedHeight: parseFloat(p.hoogte) || 0,
+                        // oppervlakte uit DB beschikbaar in properties
+                        properties: {
+                            id: p.id,
+                            oppervlakte: p.oppervlakte   // ← komt uit backend
+                        }
                     }
                 });
 

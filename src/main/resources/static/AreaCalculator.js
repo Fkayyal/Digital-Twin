@@ -37,3 +37,24 @@
     }
     return Math.abs(sum) * 0.5;
 }
+
+export function areaFromCartesian3ArrayMeters(positions, ellipsoid = Cesium.Ellipsoid.WGS84) {
+    if (!positions || positions.length < 3) return 0;
+
+    const center = Cesium.Cartesian3.fromElements(
+        positions.reduce((sum, p) => sum + p.x, 0) / positions.length,
+        positions.reduce((sum, p) => sum + p.y, 0) / positions.length,
+        positions.reduce((sum, p) => sum + p.z, 0) / positions.length
+    );
+
+    const tangentPlane = new Cesium.EllipsoidTangentPlane(center, ellipsoid);
+    const xyPoints = tangentPlane.projectPointsOntoPlane(positions);
+
+    let sum = 0;
+    for (let i = 0; i < xyPoints.length; i++) {
+        const j = (i + 1) % xyPoints.length;
+        sum += xyPoints[i].x * xyPoints[j].y - xyPoints[j].x * xyPoints[i].y;
+    }
+    return Math.abs(sum) * 0.5;
+}
+

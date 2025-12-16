@@ -6,6 +6,7 @@ import com.leeuwarden.Digital.Twin.repository.PolygonRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 //Dit is de API‑laag.
 //Het zegt: “als er een POST naar /api/polygons komt met een PolygonRequest,
@@ -27,6 +28,8 @@ public class PolygonController {
     public Polygon createPolygon(@RequestBody PolygonRequestDTO polygonRequestDTO) {
         Polygon polygon = new Polygon();
         polygon.setPointsJson(polygonRequestDTO.getPointsJson());
+        polygon.setOppervlakte(polygonRequestDTO.getOppervlakte());
+        polygon.setHoogte(polygonRequestDTO.getHoogte());
 
         return polygonRepository.save(polygon);
     }
@@ -39,6 +42,12 @@ public class PolygonController {
     @GetMapping
     public List<Polygon> getPolygons() {
         return polygonRepository.findAll();
+    }
+    @PutMapping("/{id}")
+    public Polygon updateHeight(@PathVariable Long id, @RequestBody Map<String, Double> update) {
+        Polygon polygon = polygonRepository.findById(id).orElseThrow();
+        polygon.setHoogte(update.get("hoogte"));
+        return polygonRepository.save(polygon);
     }
 
 }

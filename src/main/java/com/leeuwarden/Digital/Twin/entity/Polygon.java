@@ -11,6 +11,12 @@ public class Polygon {
     @Column(name = "points_json", columnDefinition = "TEXT")
     private String pointsJson;
 
+    @Column(name = "oppervlakte", columnDefinition = "TEXT")
+    private String oppervlakte;
+
+    @Column(name = "hoogte")
+    private double hoogte;
+
     public Polygon() {}
 
 
@@ -29,5 +35,17 @@ public class Polygon {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getOppervlakte() {
+        return oppervlakte;
+    }
+
+    public void setOppervlakte(String oppervlakte) {
+        this.oppervlakte = oppervlakte;
+    }
+
+    public double getHoogte() { return hoogte; }
+    public void setHoogte(double hoogte) { this.hoogte = hoogte; }
+
 
 }
