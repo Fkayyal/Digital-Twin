@@ -15,3 +15,15 @@
     color: whitesmoke;
     font-family:"Roboto Medium";
 }
+
+#polygonInfo{
+    position:fixed;
+    top:50px;
+    left:10px;
+    background:rgba(20,20,20,0.8);
+    padding:15px;
+    display:block;
+    color: whitesmoke;
+    font-family:"Roboto Medium";
+    z-index:9999;
+}
