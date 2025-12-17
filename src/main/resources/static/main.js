@@ -77,4 +77,14 @@ function setup() {
     if (areaInfoEl) {
         areaInfoEl.textContent = `Oppervlakte Spoordok: ${areaM2.toFixed(0)} m²`;
     }
+
+    // Dit stuk code maakt de handleiding inklapbaar:
+    // bij het klikken op de "?"-knop wordt het help-paneel getoond of verborgen.
+    const btn = document.getElementById("helpToggle");
+    const panel = document.getElementById("helpPanel");
+
+    btn.addEventListener("click", () => {
+        panel.classList.toggle("hidden");
+    });
+
 }
