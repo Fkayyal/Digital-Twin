@@ -1,4 +1,4 @@
-﻿
+﻿import {areaFromCartesian3ArrayMeters} from "./AreaCalculator.js";
 
 export class PolygonDrawer {
     constructor(viewer) {
@@ -22,7 +22,7 @@ export class PolygonDrawer {
             },
         });
         // point wordt toegevoegd aan array
-        this.pointEntities.push(point);
+        this.pointEntities.push(point)
         return point;
     }
 
@@ -115,12 +115,24 @@ export class PolygonDrawer {
                 // Skip als het de "Spoordok" polygon is
                 if (entity && entity.name !== "Spoordok") {
                     that.create3DObject(entity, 10);
-                    console.log("Hoogte aangepast:", entity.name);
+
+                    // HOOGTE OPSLAAN
+                    const nieuweHoogte =
+                        Math.round(entity.polygon.extrudedHeight.getValue());
+                    if (entity.polygonId) {
+                        fetch(`http://localhost:8080/polygons/${entity.polygonId}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ hoogte: nieuweHoogte })
+                        });
+                    }
+                    console.log("Hoogte opgeslagen:", nieuweHoogte);
                 } else if (entity && entity.name === "Spoordok") {
                     console.log("Kan 'Spoordok' niet verhogen");
                 }
             }
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK, Cesium.KeyboardEventModifier.CTRL);
+
 
 
         handler.setInputAction(function (event) {
@@ -137,7 +149,7 @@ export class PolygonDrawer {
 
         handler.setInputAction(function (event) {
             that.activeShapePoints.pop();
-            const finalPolygonEntity = that.drawShape(that.activeShapePoints);
+            const finalPolygonEntity = that.drawShape(that.activeShapePoints)
             sendPolygonToBackend(that.activeShapePoints, finalPolygonEntity);
             that.viewer.entities.remove(that.floatingPoint);
             that.viewer.entities.remove(that.activeShape);
@@ -177,11 +189,10 @@ export class PolygonDrawer {
     }
 
     create3DObject(basePolygon, height) {
-        if (basePolygon.polygon.extrudedHeight === undefined) {
-            basePolygon.polygon.extrudedHeight = height;
-        }
-        basePolygon.polygon.extrudedHeight *= 1.5;
+        let huidigeHoogte = basePolygon.polygon.extrudedHeight?.getValue() || height;
+        basePolygon.polygon.extrudedHeight = new Cesium.ConstantProperty(huidigeHoogte * 1.5);
     }
+
 
     deleteLastPolygon() {
         if (this.activeShape) {
@@ -200,22 +211,31 @@ function sendPolygonToBackend(points, cesiumEntity) {
     // Cesium Cartesian3 → simpel object {x, y, z}.
     // map: een array methode die elke element in de array langs gaat
     // en daarvan een nieuwe object maakt, dit hij opslaat in een nieuwe array.
-    "use strict";
     const simplePoints = points.map(p => ({ x: p.x, y: p.y, z: p.z }));
     // Maakt JSON-string van de objecten in de nieuwe array
     const pointsJsonString = JSON.stringify(simplePoints);
+
+    let areaM2 = 0;
+    if (points && points.length >= 3) {
+        areaM2 = areaFromCartesian3ArrayMeters(points);
+    }
+
+    const hoogte = cesiumEntity.polygon.extrudedHeight
+        ? cesiumEntity.polygon.extrudedHeight.getValue()
+        : 0;
 
     fetch('http://localhost:8080/polygons', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         // Hier wordt zo’n JSON‑object gemaakt, dat door DTO wordt verwacht { "pointsJson": "..." }.
         body: JSON.stringify({
-            pointsJson: pointsJsonString
+            pointsJson: pointsJsonString,
+            oppervlakte: `${areaM2.toFixed(0)} m²`,
+            hoogte: hoogte
         })
     })
         .then(response => response.json())
         .then(savedPolygon => {
             cesiumEntity.polygonId = savedPolygon.id;
-
         });
 }

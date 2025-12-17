@@ -1,6 +1,7 @@
 import { initializeCesiumViewer } from './cesiumSettings.js';
 import { PolygonDrawer } from './createPolygon.js';
 import { areaFromDegreesArrayMeters } from './AreaCalculator.js';
+import { setupPolygonInfoHandler } from './inspectPolygon.js';
 
 window.onload = setup;
 
@@ -10,6 +11,7 @@ let polygonDrawer;
 function setup() {
     viewer = initializeCesiumViewer("cesiumContainer");
     polygonDrawer = new PolygonDrawer(viewer);
+    setupPolygonInfoHandler(viewer);
 
     fetch('http://localhost:8080/polygons')
         .then(r => r.json())
@@ -29,7 +31,12 @@ function setup() {
                         hierarchy: positions,
                         material: new Cesium.ColorMaterialProperty(
                             Cesium.Color.fromCssColorString('#2f3f36')
-                        )
+                        ),
+                        extrudedHeight: new Cesium.ConstantProperty(parseFloat(p.hoogte) || 0),
+                        properties: {
+                            id: p.id,
+                            oppervlakte: new Cesium.ConstantProperty(p.oppervlakte)
+                        }
                     }
                 });
 
