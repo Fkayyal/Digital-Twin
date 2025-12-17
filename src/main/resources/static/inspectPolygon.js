@@ -10,7 +10,8 @@ export function setupPolygonInfoHandler(viewer) {
                 let oppervlakte = 'Onbekend';
                 if (entity.properties && entity.properties.oppervlakte) {
                     const prop = entity.properties.oppervlakte;
-                    oppervlakte = prop.isConstant ? prop.getValue() : prop.getValue(viewer.clock.currentTime);
+                    const value = prop.isConstant ? prop.getValue() : prop.getValue(viewer.clock.currentTime);
+                    oppervlakte = value;
                 }
 
                 let hoogte = 0;
