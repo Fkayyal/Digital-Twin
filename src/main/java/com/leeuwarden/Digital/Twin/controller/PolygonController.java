@@ -2,6 +2,7 @@ package com.leeuwarden.Digital.Twin.controller;
 
 import com.leeuwarden.Digital.Twin.DTO.PolygonRequestDTO;
 import com.leeuwarden.Digital.Twin.entity.Polygon;
+import com.leeuwarden.Digital.Twin.mapper.PolygonMapper;
 import com.leeuwarden.Digital.Twin.repository.PolygonRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,20 +18,18 @@ import java.util.Map;
 public class PolygonController {
     // Dependancy injection
     private final PolygonRepository polygonRepository;
+    private final PolygonMapper polygonMapper;
 
-    public PolygonController(PolygonRepository polygonRepository) {
+    public PolygonController(PolygonRepository polygonRepository, PolygonMapper polygonMapper) {
         this.polygonRepository = polygonRepository;
+        this.polygonMapper = polygonMapper;
     }
 
-    // dit is eigenlijk een soort van mapper, die DTO omzet naar Entity.
-    // DTO --> Entity
+
     @PostMapping
     public Polygon createPolygon(@RequestBody PolygonRequestDTO polygonRequestDTO) {
-        Polygon polygon = new Polygon();
-        polygon.setPointsJson(polygonRequestDTO.getPointsJson());
-        polygon.setOppervlakte(polygonRequestDTO.getOppervlakte());
-        polygon.setHoogte(polygonRequestDTO.getHoogte());
-
+        // Zet de data uit de request (DTO) om naar een Polygon entity
+        Polygon polygon = polygonMapper.toEntity(polygonRequestDTO);
         return polygonRepository.save(polygon);
     }
 
