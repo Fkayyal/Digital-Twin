@@ -9,9 +9,28 @@
         <div id="cesiumContainer"></div>
         <div id="areaInfo">Oppervlakte: n.v.t.</div>
         <div id="polygonInfo">
-            ID: <span id="infoId">test</span><br>
             Oppervlakte: <span id="infoOppervlakte">test</span><br>
-            Hoogte: <span id="infoHoogte">test</span>
+            Hoogte: <span id="infoHoogte">test</span><br>
+            ID: <span id="infoId">test</span>
+        </div>
+
+        <button id="helpToggle" title="Help"> ? </button>
+
+        <div id="helpPanel" class="hidden">
+            <div class="sectionTitle">Navigeren</div>
+            <ul>
+                <li><span>Zoom in/uit: </span> Scroll met het muiswiel.</li>
+                <li><span>Bewegen: </span> Houd de linkermuisknop ingedrukt en sleep om het beeld te verplaatsen.</li>
+            </ul>
+
+            <div class="sectionTitle">Polygonen</div>
+            <ul>
+                <li><span>Polygoon tekenen:</span> Linksklik om punten te plaatsen, rechtsklik om af te sluiten (wordt daarna opgeslagen).</li>
+                <li><span>Info tonen:</span> SHIFT + linksklik op een polygoon.</li>
+                <li><span>Hoogte verhogen: </span> CTRL + linksklik op een polygoon.</li>
+                <li><span>Hoogte verlagen: </span> CTRL + rechtsklik op een polygoon.</li>
+                <li><span>Verwijderen: </span> ALT + linksklik op een polygoon (niet Spoordok).</li>
+            </ul>
         </div>
 
     </body>
