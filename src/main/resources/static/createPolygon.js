@@ -22,7 +22,7 @@ export class PolygonDrawer {
             },
         });
         // point wordt toegevoegd aan array
-        this.pointEntities.push(point)
+        this.pointEntities.push(point);
         return point;
     }
 
@@ -137,7 +137,7 @@ export class PolygonDrawer {
 
         handler.setInputAction(function (event) {
             that.activeShapePoints.pop();
-            const finalPolygonEntity = that.drawShape(that.activeShapePoints)
+            const finalPolygonEntity = that.drawShape(that.activeShapePoints);
             sendPolygonToBackend(that.activeShapePoints, finalPolygonEntity);
             that.viewer.entities.remove(that.floatingPoint);
             that.viewer.entities.remove(that.activeShape);
@@ -177,7 +177,7 @@ export class PolygonDrawer {
     }
 
     create3DObject(basePolygon, height) {
-        if (basePolygon.polygon.extrudedHeight == undefined) {
+        if (basePolygon.polygon.extrudedHeight === undefined) {
             basePolygon.polygon.extrudedHeight = height;
         }
         basePolygon.polygon.extrudedHeight *= 1.5;
@@ -200,6 +200,7 @@ function sendPolygonToBackend(points, cesiumEntity) {
     // Cesium Cartesian3 → simpel object {x, y, z}.
     // map: een array methode die elke element in de array langs gaat
     // en daarvan een nieuwe object maakt, dit hij opslaat in een nieuwe array.
+    "use strict";
     const simplePoints = points.map(p => ({ x: p.x, y: p.y, z: p.z }));
     // Maakt JSON-string van de objecten in de nieuwe array
     const pointsJsonString = JSON.stringify(simplePoints);
@@ -215,5 +216,6 @@ function sendPolygonToBackend(points, cesiumEntity) {
         .then(response => response.json())
         .then(savedPolygon => {
             cesiumEntity.polygonId = savedPolygon.id;
+
         });
 }
