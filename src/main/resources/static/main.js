@@ -26,19 +26,23 @@ function setup() {
                 );
 
                 // 3. polygon tekenen in Cesium
+                const oppNumber = parseFloat(p.oppervlakte);
                 const entity = viewer.entities.add({
                     polygon: {
                         hierarchy: positions,
                         material: new Cesium.ColorMaterialProperty(
                             Cesium.Color.fromCssColorString('#2f3f36')
                         ),
-                        extrudedHeight: new Cesium.ConstantProperty(parseFloat(p.hoogte) || 0),
-                        properties: {
-                            id: p.id,
-                            oppervlakte: new Cesium.ConstantProperty(p.oppervlakte)
-                        }
+                        extrudedHeight: new Cesium.ConstantProperty(parseFloat(p.hoogte) || 0)
+                    },
+                    properties: {
+                        id: p.id,
+                        oppervlakte: new Cesium.ConstantProperty(
+                            oppNumber || 0
+                        )
                     }
                 });
+
 
                 // 4. database-id bewaren voor later verwijderen
                 entity.polygonId = p.id;
@@ -73,4 +77,14 @@ function setup() {
     if (areaInfoEl) {
         areaInfoEl.textContent = `Oppervlakte Spoordok: ${areaM2.toFixed(0)} m²`;
     }
+
+    // Dit stuk code maakt de handleiding inklapbaar:
+    // bij het klikken op de "?"-knop wordt het help-paneel getoond of verborgen.
+    const btn = document.getElementById("helpToggle");
+    const panel = document.getElementById("helpPanel");
+
+    btn.addEventListener("click", () => {
+        panel.classList.toggle("hidden");
+    });
+
 }
