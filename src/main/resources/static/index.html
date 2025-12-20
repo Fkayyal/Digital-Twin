@@ -16,9 +16,13 @@
                     <div class="col-12">
                         <h3 class="pt-3">Spoordok Digital Twin</h3>
                     </div>
+
+                    <!-- Oppervlakte Spoordok -->
                     <div class="col-12">
                         <div id="areaInfo">Oppervlakte: n.v.t.</div>
                     </div>
+
+                    <!-- Info selected gebied -->
                     <div class="col-12 pt-3">
                         <p> <span class="fw-bold">Gebied</span><br>
                             Id: <span id="infoId">...</span><br>
@@ -26,17 +30,21 @@
                             Hoogte: <span id="infoHoogte">...</span><br>
                         </p>
                     </div>
+
+                    <!-- Range sliders -->
                     <div class="col-12">
                         <label for="customRange1" class="form-label">Example range</label>
                         <input type="range" class="form-range" id="customRange1">
                     </div>
                 </div>
             </div>
+            <!-- Sidebar end -->
 
             <!-- Cesium viewer, 75% van scherm -->
             <div class="col-10 p-0">
                 <div id="cesiumContainer" class="h-100 w-100"></div>
 
+                <!-- Help knop -->
                 <button id="helpToggle" title="Help"> ? </button>
 
                 <div id="helpPanel" class="hidden">
@@ -55,10 +63,10 @@
                         <li><span>Verwijderen: </span> ALT + linksklik op een polygoon (niet Spoordok).</li>
                     </ul>
                 </div>
-                    <!-- jouw help-HTML hier -->
                 </div>
+
+            <!-- Cesium viewer end -->
             </div>
         </div>
-
     </body>
 </html>
