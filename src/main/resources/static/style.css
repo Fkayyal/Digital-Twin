@@ -4,14 +4,70 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
+    font-family: Roboto;
 }
-#areaInfo{
-    position:absolute;
-    top:10px;
-    left:10px;
-    padding:6px 10px;
-    background:rgba(20,20,20,0.8);
-    z-index:10;
+
+#helpToggle{
+    position: fixed;
+    top: 50px;
+    right: 10px;
+    z-index: 10000;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 6px;
+    background: rgba(20,20,20,0.8);
     color: whitesmoke;
-    font-family:"Roboto Medium";
+    font-weight: 700;
+    cursor: pointer;
 }
+
+/* verbergen/tonen */
+#helpPanel.hidden{
+    display: none;
+}
+
+#helpPanel{
+    position: fixed;
+    top: 90px;
+    right: 5px;
+    z-index: 9999;
+    background: rgba(20,20,20,0.8);
+    color: rgba(245,245,245,0.9);
+    padding: 12px 14px;
+    font-family: Roboto Medium;
+    font-weight: 400;
+    max-width: 320px;
+}
+
+#helpPanel .sectionTitle{
+    margin-top: 10px;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: whitesmoke;
+}
+
+#helpPanel ul{
+    margin: 0;
+    padding-left: 20px;
+}
+
+#helpPanel li{
+    margin-bottom: 12px;
+}
+
+/* Alleen de labels in je <span> wit + bold */
+#helpPanel span{
+    color: whitesmoke;
+    font-weight: 700;
+}
+
+/* Vergergeen van de timeline, fullscreen en animation */
+.cesium-viewer-timelineContainer, .cesium-viewer-fullscreenContainer, .cesium-viewer-animationContainer, .cesium-animation-shuttleRingG {
+    display: none;
+}
+.sidebar {
+    background: linear-gradient(to right, #191c1f, dimgray);
+    color: white;
+}
+

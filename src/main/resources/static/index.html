@@ -1,17 +1,63 @@
 <html>
-    <head>
-        <script src="Cesium-1.135/Build/Cesium/Cesium.js"></script>
-        <script type="module" src="main.js"></script>
-        <link href="Cesium-1.135/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
-        <link href="style.css" rel="stylesheet">
-    </head>
-    <body>
-        <div id="cesiumContainer"></div>
-        <div id="areaInfo">Oppervlakte: n.v.t.</div>
-        <div id="polygonInfo" style="position:fixed;top:10px;right:10px;background:yellow;padding:15px;border:2px solid red;display:block;font-weight:bold;z-index:9999;">
-            ID: <span id="infoId">test</span><br>
-            Oppervlakte: <span id="infoOppervlakte">test</span><br>
-            Hoogte: <span id="infoHoogte">test</span>
+<head>
+    <script src="Cesium-1.135/Build/Cesium/Cesium.js"></script>
+    <script type="module" src="main.js"></script>
+    <link href="Cesium-1.135/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+<section class="vh-100 sidebar">
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <!-- Sidebar: 25% -->
+            <div class="col-2 border-end shadow-lg">
+                <div class="row p-2">
+                    <div class="col-12">
+                        <h3 class="pt-3">Spoordok Digital Twin</h3>
+                    </div>
+                    <div class="col-12">
+                        <div id="areaInfo">Oppervlakte: n.v.t.</div>
+                    </div>
+                    <div class="col-12 pt-3">
+                        <p> <span class="fw-bold">Gebied</span><br>
+                            Id: <span id="infoId">...</span><br>
+                            Oppervlakte: <span id="infoOppervlakte">...</span><br>
+                            Hoogte: <span id="infoHoogte">...</span><br>
+                        </p>
+                    </div>
+                    <div class="col-12">
+                        <label for="customRange1" class="form-label">Example range</label>
+                        <input type="range" class="form-range" id="customRange1">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cesium viewer, 75% van scherm -->
+            <div class="col-10 p-0">
+                <div id="cesiumContainer" class="h-100 w-100"></div>
+
+                <button id="helpToggle" title="Help"> ? </button>
+
+                <div id="helpPanel" class="hidden">
+                    <div class="sectionTitle">Navigeren</div>
+                    <ul>
+                        <li><span>Zoom in/uit: </span> Scroll met het muiswiel.</li>
+                        <li><span>Bewegen: </span> Houd de linkermuisknop ingedrukt en sleep om het beeld te verplaatsen.</li>
+                    </ul>
+
+                    <div class="sectionTitle">Polygonen</div>
+                    <ul>
+                        <li><span>Polygoon tekenen:</span> Linksklik om punten te plaatsen, rechtsklik om af te sluiten (wordt daarna opgeslagen).</li>
+                        <li><span>Info tonen:</span> SHIFT + linksklik op een polygoon.</li>
+                        <li><span>Hoogte verhogen: </span> CTRL + linksklik op een polygoon.</li>
+                        <li><span>Hoogte verlagen: </span> CTRL + rechtsklik op een polygoon.</li>
+                        <li><span>Verwijderen: </span> ALT + linksklik op een polygoon (niet Spoordok).</li>
+                    </ul>
+                </div>
+                    <!-- jouw help-HTML hier -->
+                </div>
+            </div>
         </div>
 
     </body>
