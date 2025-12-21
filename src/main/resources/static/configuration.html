@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <script type="module" src="main.js"></script>
+    <link href="Cesium-1.135/Build/Cesium/Widgets/widgets.css" rel="stylesheet"> <!-- Cesium CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> <!-- Bootstrap CSS -->
+    <link href="style.css" rel="stylesheet"> <!-- Style CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler.min.css" /> <!-- Tabler CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/js/tabler.min.js"> </script> <!-- Tabler Js -->
+
+</head>
+<body>
+<section id="configuration" class="pb-6">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 pt-3 pb-3">
+                <h1>Configuratiescherm Digital Twin</h1>
+            </div>
+            <div class="col-12">
+                <h2 class="pt-4"> Standaardwaarden</h2>
+                <div class="table-responsive card">
+                    <table class="table table-vcenter p-3">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Omschrijving</th>
+                            <th>Kostprijs per eenheid</th>
+                            <th>Opbrengst</th>
+                            <th>Bewoners/medewerkers per eenheid</th>
+                            <th>Leefbaarheidscore 1-10</th>
+                            <th class="w-1"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <!-- Vrijstaand huis -->
+                        <tr>
+                            <td>A</td>
+                            <td class="text-secondary">Vrijstaand huis</td>
+                            <td class="text-secondary">500</td>
+                            <td class="text-secondary">12%</td>
+                            <td class="text-secondary">0,005</td>
+                            <td class="text-secondary">4</td>
+                            <td><a class="text-green" href="#">Edit</a></td>
+                        </tr>
+
+                        <!-- Rijtjeswoning -->
+                        <tr>
+                            <td>B</td>
+                            <td class="text-secondary">Rijtjeswoning</td>
+                            <td class="text-secondary">400</td>
+                            <td class="text-secondary">8%</td>
+                            <td class="text-secondary">0,01</td>
+                            <td class="text-secondary">6</td>
+                            <td><a class="text-green" href="#">Edit</a></td>
+                        </tr>
+
+                        <!-- Appartement -->
+                        <tr>
+                            <td>C</td>
+                            <td class="text-secondary">Appartement</td>
+                            <td class="text-secondary">300</td>
+                            <td class="text-secondary">8%</td>
+                            <td class="text-secondary">0,01</td>
+                            <td class="text-secondary">6</td>
+                            <td><a class="text-green" href="#">Edit</a></td>
+                        </tr>
+
+                        <!-- Bedrijfsgebouw -->
+                        <tr>
+                            <td>D</td>
+                            <td class="text-secondary">Bedrijfsgebouw</td>
+                            <td class="text-secondary">200</td>
+                            <td class="text-secondary">12%</td>
+                            <td class="text-secondary">0,006</td>
+                            <td class="text-secondary">5</td>
+                            <td><a class="text-green" href="#">Edit</a></td>
+                        </tr>
+
+                        <!-- Park/groen -->
+                        <tr>
+                            <td>E</td>
+                            <td class="text-secondary">Park/groen</td>
+                            <td class="text-secondary">150</td>
+                            <td class="text-secondary">0%</td>
+                            <td class="text-secondary">n.v.t.</td>
+                            <td class="text-secondary">10</td>
+                            <td><a class="text-green" href="#">Edit</a></td>
+                        </tr>
+
+                        <!-- Weg -->
+                        <tr>
+                            <td>F</td>
+                            <td class="text-secondary">Wegen</td>
+                            <td class="text-secondary">100</td>
+                            <td class="text-secondary">5%</td>
+                            <td class="text-secondary">n.v.t.</td>
+                            <td class="text-secondary">8</td>
+                            <td><a class="text-green" href="#">Edit</a></td>
+                        </tr>
+
+                        <!-- Parkeerplaats -->
+                        <tr>
+                            <td>G</td>
+                            <td class="text-secondary">Parkeerplaatsen</td>
+                            <td class="text-secondary">100</td>
+                            <td class="text-secondary">10%</td>
+                            <td class="text-secondary">n.v.t.</td>
+                            <td class="text-secondary">6</td>
+                            <td><a class="text-green" href="#">Edit</a></td>
+                        </tr>
+
+                        <!-- Parkeerplaats overdekt -->
+                        <tr>
+                            <td>F</td>
+                            <td class="text-secondary">Parkeerplaatsen overdekt</td>
+                            <td class="text-secondary">1500</td>
+                            <td class="text-secondary">15%</td>
+                            <td class="text-secondary">n.v.t.</td>
+                            <td class="text-secondary">10</td>
+                            <td><a class="text-green" href="#">Edit</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2 class="pt-4"> Doelen</h2>
+                <div class="table-responsive card">
+                    <table class="table table-vcenter p-3">
+                        <thead>
+                        <tr>
+                            <th>DoelId</th>
+                            <th>Omschrijving</th>
+                            <th>Aantal</th>
+                            <th class="w-1"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <!-- Inwoners -->
+                        <tr>
+                            <td>1</td>
+                            <td class="text-secondary">Aantal inwoners die moet kunnen wonen in het gebied</td>
+                            <td class="text-secondary">3000</td>
+                            <td><a class="text-green" href="#">Edit</a></td>
+                        </tr>
+
+                        <!-- Arbeiders -->
+                        <tr>
+                            <td>2</td>
+                            <td class="text-secondary">Aantal werkenden die moet kunnen werken in het gebied</td>
+                            <td class="text-secondary">500</td>
+                            <td><a class="text-green" href="#">Edit</a></td>
+                        </tr>
+
+                        <!-- Natuur -->
+                        <tr>
+                            <td>3</td>
+                            <td class="text-secondary">Percentage natuur/groen van het gebied</td>
+                            <td class="text-secondary">20%</td>
+                            <td><a class="text-green" href="#">Edit</a></td>
+                        </tr>
+
+                        <!-- Bedrijfsgebouw -->
+                        <tr>
+                            <td>4</td>
+                            <td class="text-secondary">Maximum percentage van de bebouwing voor bedrijfsgebouwen</td>
+                            <td class="text-secondary">20%</td>
+                            <td><a class="text-green" href="#">Edit</a></td>
+                        </tr>
+
+                        <!-- parkeerplekken -->
+                        <tr>
+                            <td>C</td>
+                            <td class="text-secondary">Aantal parkeerplekken</td>
+                            <td class="text-secondary">4500</td>
+                            <td><a class="text-green" href="#">Edit</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</section>
+<footer id="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 text-center pt-6">
+                <a class="btn btn-sm btn-outline-light" href="index.html">
+                    <p>Terug</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

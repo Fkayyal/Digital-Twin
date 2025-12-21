@@ -150,3 +150,37 @@
     background: linear-gradient(to right, dimgray, #e6dada);
     border-color: #191c1f;
 }
+
+/* Styling button Light */
+.btn-outline-light{
+    text-align: center;
+    vertical-align: middle;
+    width: 5rem;
+    height: auto;
+}
+
+
+.btn-primary{
+    background: linear-gradient(to right, #00906b, #00ba8b);
+    width: 3rem;
+    height: 3rem;
+    border-color: transparent;
+}
+
+.btn-primary:hover{
+    border-color: #00906b;
+}
+
+#configuration{
+    background: linear-gradient(to right, #5b957e, #1a2c3f);
+    color: white;
+}
+
+.table, table{
+    font-family: Roboto;
+}
+
+#footer{
+    height: 12rem;
+    background-color:#202124;
+}
