@@ -17,8 +17,8 @@ public class Polygon {
     @Column(name = "hoogte")
     private double hoogte;
 
-    @Column(name = "soort")
-    private String soort;
+    //@Column(name = "soort")
+    //private String soort;
 
     public Polygon() {}
 
@@ -50,8 +50,8 @@ public class Polygon {
     public double getHoogte() { return hoogte; }
     public void setHoogte(double hoogte) { this.hoogte = hoogte; }
 
-    public String getSoort() { return soort; }
-    public void setSoort(String soort) { this.soort = soort; }
+    //public String getSoort() { return soort; }
+    //public void setSoort(String soort) { this.soort = soort; }
 
 
 }
