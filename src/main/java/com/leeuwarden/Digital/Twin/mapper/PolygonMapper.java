@@ -17,6 +17,7 @@ public class PolygonMapper implements Mapper<PolygonRequestDTO, Polygon>{
         polygon.setPointsJson(polygonRequestDTO.getPointsJson());
         polygon.setOppervlakte(polygonRequestDTO.getOppervlakte());
         polygon.setHoogte(polygonRequestDTO.getHoogte());
+        polygon.setSoort(polygonRequestDTO.getSoort());
         return polygon;
     }
 

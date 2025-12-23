@@ -181,6 +181,8 @@
 }
 
 #footer{
-    height: 12rem;
+    height: 6rem;
+    align-content: center;
+    vertical-align: middle;
     background-color:#202124;
 }
