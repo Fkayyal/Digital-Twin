@@ -14,8 +14,11 @@ public class Polygon {
     @Column(name = "oppervlakte", columnDefinition = "TEXT")
     private String oppervlakte;
 
-    @Column(name = "hoogte")
+    @Column(name = "hoogte", columnDefinition = "DOUBLE PRECISION")
     private double hoogte;
+
+    @Column(name = "soort", columnDefinition = "TEXT")
+    private String soort;
 
     public Polygon() {}
 
@@ -47,5 +50,6 @@ public class Polygon {
     public double getHoogte() { return hoogte; }
     public void setHoogte(double hoogte) { this.hoogte = hoogte; }
 
-
+    public String getSoort() { return soort; }
+    public void setSoort(String soort) { this.soort = soort; }
 }

@@ -112,3 +112,6 @@ generated/
 
 ## Database properties
 .properties
+
+# Niet committen: lokale Spring config
+src/main/resources/application.properties

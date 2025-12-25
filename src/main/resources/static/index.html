@@ -1,37 +1,182 @@
 <html>
-    <head>
-        <script src="Cesium-1.135/Build/Cesium/Cesium.js"></script>
-        <script type="module" src="main.js"></script>
-        <link href="Cesium-1.135/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
-        <link href="style.css" rel="stylesheet">
-    </head>
-    <body>
-        <div id="cesiumContainer"></div>
-        <div id="areaInfo">Oppervlakte: n.v.t.</div>
-        <div id="polygonInfo">
-            Oppervlakte: <span id="infoOppervlakte">test</span><br>
-            Hoogte: <span id="infoHoogte">test</span><br>
-            ID: <span id="infoId">test</span>
+<head>
+    <script src="Cesium-1.135/Build/Cesium/Cesium.js"></script>
+    <script type="module" src="main.js"></script>
+    <link href="Cesium-1.135/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+<section class="vh-100 sidebar">
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <!-- Sidebar: 25% -->
+            <div class="col-2 border-end shadow-lg" style="overflow-y: auto; height: 100vh;">
+                <div class="row p-2">
+                    <div class="col-12">
+                        <h3 class="pt-3">Spoordok Digital Twin</h3>
+                    </div>
+
+                    <!-- Oppervlakte Spoordok -->
+                    <div class="col-12">
+                        <div id="areaInfo">Oppervlakte: n.v.t.</div>
+                    </div>
+
+                    <!-- Info selected gebied -->
+                    <div class="col-12 pt-3">
+                        <p> <span class="fw-bold">Gebied</span><br>
+                            Id: <span id="infoId">...</span><br>
+                            Oppervlakte: <span id="infoOppervlakte">...</span><br>
+                            Hoogte: <span id="infoHoogte">...</span><br>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Polygonen -->
+                <div class="row">
+                    <div class="col-12 p-3">
+                        <p>
+                            <span class="fw-bold">Polygonen tekenen</span><br>
+                            <span class="fst-italic"> Hier kun je de verschillende soorten polygonen tekenen </span>
+                        </p>
+                    </div>
+
+                    <!-- Rij 1 -->
+                    <div class="col-12">
+                        <div class="row g-2">
+                            <div class="col-12 col-xl-6">
+                                <button class="btn btn-sm btn-outline-primary p-2 w-100" style="min-height: 90px;">
+                                    <p class="mb-0 text-center">
+                                        <i class="bi bi-house-fill" style="font-size: 32px;"></i><br>
+                                        <span>Vrijstaand huis</span>
+                                    </p>
+                                </button>
+                            </div>
+
+                            <div class="col-12 col-xl-6">
+                                <button class="btn btn-sm btn-outline-danger p-2 w-100" style="min-height: 90px;">
+                                    <p class="mb-0 text-center">
+                                        <i class="bi bi-building-fill" style="font-size: 32px;"></i><br>
+                                        <span>Appartement</span>
+                                    </p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rij 2 -->
+                    <div class="col-12 pt-1">
+                        <div class="row g-2">
+                            <div class="col-12 col-xl-6">
+                                <button class="btn btn-sm btn-outline-warning p-2 w-100" style="min-height: 90px;">
+                                    <p class="mb-0 text-center">
+                                        <i class="bi bi-houses-fill" style="font-size: 32px;"></i><br>
+                                        <span>Rijtjeshuis</span>
+                                    </p>
+                                </button>
+                            </div>
+
+                            <div class="col-12 col-xl-6">
+                                <button class="btn btn-sm btn-outline-info p-2 w-100" style="min-height: 90px;">
+                                    <p class="mb-0 text-center">
+                                        <i class="bi bi-buildings-fill" style="font-size: 32px;"></i><br>
+                                        <span>Bedrijfsgebouw</span>
+                                    </p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rij 3 -->
+                    <div class="col-12 pt-1">
+                        <div class="row g-2">
+                            <div class="col-12 col-xl-6">
+                                <button class="btn btn-sm btn-outline-success p-2 w-100" style="min-height: 90px;">
+                                    <p class="mb-0 text-center">
+                                        <i class="bi bi-tree-fill" style="font-size: 32px;"></i><br>
+                                        <span>Park / groen</span>
+                                    </p>
+                                </button>
+                            </div>
+
+                            <div class="col-12 col-xl-6">
+                                <button class="btn btn-sm btn-outline-secondary p-2 w-100" style="min-height: 90px;">
+                                    <p class="mb-0 text-center">
+                                        <i class="bi bi-sign-turn-right-fill" style="font-size: 32px;"></i><br>
+                                        <span>Weg</span>
+                                    </p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rij 4 -->
+                    <div class="col-12 pt-1">
+                        <div class="row g-2">
+                            <div class="col-12 col-xl-6">
+                                <button class="btn btn-sm btn-outline-secondary p-2 w-100" style="min-height: 90px;">
+                                    <p class="mb-0 text-center">
+                                        <i class="bi bi-p-circle-fill" style="font-size: 32px;"></i><br>
+                                        <span>Parkeerplek</span>
+                                    </p>
+                                </button>
+                            </div>
+
+                            <div class="col-12 col-xl-6">
+                                <button class="btn btn-sm btn-outline-secondary p-2 w-100" style="min-height: 90px;">
+                                    <p class="mb-0 text-center">
+                                        <i class="bi bi-p-square-fill" style="font-size: 32px;"></i><br>
+                                        <span>Parkeerplek overdekt</span>
+                                    </p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+                <div class="row mb-3">
+                    <div class="col-12 d-grid ">
+                        <a href="configuration.html" class="btn btn-outline-light">
+                            <i class="bi bi-sliders fs-4"></i>
+                            <span class="ms-2">Configuratie</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Sidebar end -->
+
+            <!-- Cesium viewer, 75% van scherm -->
+            <div class="col-10 p-0">
+                <div id="cesiumContainer" class="h-100 w-100"></div>
+
+                <!-- Help knop -->
+                <button id="helpToggle" title="Help"> ? </button>
+
+                <div id="helpPanel" class="hidden">
+                    <div class="sectionTitle">Navigeren</div>
+                    <ul>
+                        <li><span>Zoom in/uit: </span> Scroll met het muiswiel.</li>
+                        <li><span>Bewegen: </span> Houd de linkermuisknop ingedrukt en sleep om het beeld te verplaatsen.</li>
+                    </ul>
+
+                    <div class="sectionTitle">Polygonen</div>
+                    <ul>
+                        <li><span>Polygoon tekenen:</span> Linksklik om punten te plaatsen, rechtsklik om af te sluiten (wordt daarna opgeslagen).</li>
+                        <li><span>Info tonen:</span> SHIFT + linksklik op een polygoon.</li>
+                        <li><span>Hoogte verhogen: </span> CTRL + linksklik op een polygoon.</li>
+                        <li><span>Hoogte verlagen: </span> CTRL + rechtsklik op een polygoon.</li>
+                        <li><span>Verwijderen: </span> ALT + linksklik op een polygoon (niet Spoordok).</li>
+                    </ul>
+                </div>
+                </div>
+            </div>
+            </div>
+            <!-- Cesium viewer end -->
+            </div>
         </div>
-
-        <button id="helpToggle" title="Help"> ? </button>
-
-        <div id="helpPanel" class="hidden">
-            <div class="sectionTitle">Navigeren</div>
-            <ul>
-                <li><span>Zoom in/uit: </span> Scroll met het muiswiel.</li>
-                <li><span>Bewegen: </span> Houd de linkermuisknop ingedrukt en sleep om het beeld te verplaatsen.</li>
-            </ul>
-
-            <div class="sectionTitle">Polygonen</div>
-            <ul>
-                <li><span>Polygoon tekenen:</span> Linksklik om punten te plaatsen, rechtsklik om af te sluiten (wordt daarna opgeslagen).</li>
-                <li><span>Info tonen:</span> SHIFT + linksklik op een polygoon.</li>
-                <li><span>Hoogte verhogen: </span> CTRL + linksklik op een polygoon.</li>
-                <li><span>Hoogte verlagen: </span> CTRL + rechtsklik op een polygoon.</li>
-                <li><span>Verwijderen: </span> ALT + linksklik op een polygoon (niet Spoordok).</li>
-            </ul>
-        </div>
-
+    </section>
     </body>
 </html>

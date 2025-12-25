@@ -4,28 +4,7 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
-}
-#areaInfo{
-    position:absolute;
-    top:10px;
-    left:10px;
-    padding:6px 10px;
-    background:rgba(20,20,20,0.8);
-    z-index:10;
-    color: whitesmoke;
-    font-family:"Roboto Medium";
-}
-
-#polygonInfo{
-    position:fixed;
-    top:50px;
-    left:10px;
-    background:rgba(20,20,20,0.8);
-    padding:15px;
-    display:block;
-    color: whitesmoke;
-    font-family:"Roboto Medium";
-    z-index:9999;
+    font-family: Roboto;
 }
 
 #helpToggle{
@@ -83,3 +62,127 @@
     font-weight: 700;
 }
 
+/* Verbergen van de timeline, fullscreen, animation en de ring */
+.cesium-viewer-timelineContainer, .cesium-viewer-fullscreenContainer, .cesium-viewer-animationContainer, .cesium-animation-shuttleRingG {
+    display: none;
+}
+
+/* Styling sidebar */
+.sidebar {
+    background: linear-gradient(to right, #191c1f, dimgray);
+    color: white;
+}
+
+/* Styling button primary */
+.btn-outline-primary{
+    color: #005C97;
+    border-color: #005C97;
+    width: 8rem;
+    height: 6rem;
+}
+.btn-outline-primary:active, .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-secondary:active{
+    color: white;
+    background: linear-gradient(90deg, #005C97 0%, #2071a4 100%);
+    border-color: #191c1f;
+}
+
+/* Styling button Danger */
+.btn-outline-danger{
+    color: #e53935;
+    border-color: #e35d5b;
+    width: 8rem;
+    height: 6rem;
+}
+.btn-outline-danger:active, .btn-outline-danger:hover, .btn-outline-danger:focus, .btn-outline-danger:active{
+    color: white;
+    background: linear-gradient(to right, #e53935, #e35d5b);
+    border-color: #191c1f;
+}
+
+/* Styling button info */
+.btn-outline-info{
+    color: #4e7c82;
+    border-color: #4e7c82;
+    width: 8rem;
+    height: 6rem;
+}
+.btn-outline-info:active, .btn-outline-info:hover, .btn-outline-info:focus, .btn-outline-info:active{
+    color: white;
+    background: linear-gradient(to right, #135058, #4e7c82);
+    border-color: #191c1f;
+}
+
+/* Styling button Warning */
+.btn-outline-warning{
+    color: #ffb347;
+    border-color: #ffb347;
+    width: 8rem;
+    height: 6rem;
+}
+.btn-outline-warning:active, .btn-outline-warning:hover, .btn-outline-warning:focus, .btn-outline-warning:active{
+    color: white;
+    background: linear-gradient(to right, #ffb347, #ffc675);
+    border-color: #191c1f;
+}
+
+/* Styling button Success */
+.btn-outline-success{
+    color: #00906b;
+    border-color: #00906b;
+    width: 8rem;
+    height: 6rem;
+}
+.btn-outline-success:active, .btn-outline-success:hover, .btn-outline-success:focus, .btn-outline-success:active{
+    color: white;
+    background: linear-gradient(to right, #00906b, #00ba8b);
+    border-color: #191c1f;
+}
+
+/* Styling button Secondary */
+.btn-outline-secondary{
+    color: lightgrey;
+    border-color: lightgrey;
+    width: 8rem;
+    height: 6rem;
+}
+.btn-outline-secondary:active, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active{
+    color: white;
+    background: linear-gradient(to right, dimgray, #e6dada);
+    border-color: #191c1f;
+}
+
+/* Styling button Light */
+#backButton{
+    text-align: center;
+    vertical-align: middle;
+    width: 5rem;
+    height: auto;
+}
+
+
+.btn-primary{
+    background: linear-gradient(to right, #00906b, #00ba8b);
+    width: 3rem;
+    height: 3rem;
+    border-color: transparent;
+}
+
+.btn-primary:hover{
+    border-color: #00906b;
+}
+
+#configuration{
+    background: linear-gradient(to right, #5b957e, #1a2c3f);
+    color: white;
+}
+
+.table, table{
+    font-family: Roboto;
+}
+
+#footer{
+    height: 6rem;
+    align-content: center;
+    vertical-align: middle;
+    background-color:#202124;
+}
