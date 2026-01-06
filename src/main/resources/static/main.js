@@ -2,13 +2,23 @@ import { initializeCesiumViewer } from './cesiumSettings.js';
 import { PolygonDrawer } from './createPolygon.js';
 import { areaFromDegreesArrayMeters } from './AreaCalculator.js';
 import { setupPolygonInfoHandler } from './inspectPolygon.js';
+import { populateConfigs, initModalEdit, populateDoelen, initDoelenModal } from './configuration.js';
 
 window.onload = setup;
 
 let viewer;
 let polygonDrawer;
 
-function setup() {
+async function setup() {
+
+    //Configuration page
+    populateConfigs();
+    initModalEdit();
+
+    populateDoelen();
+    initDoelenModal();
+
+
     viewer = initializeCesiumViewer("cesiumContainer");
     polygonDrawer = new PolygonDrawer(viewer);
     setupPolygonInfoHandler(viewer);
@@ -17,15 +27,10 @@ function setup() {
         .then(r => r.json())
         .then(polygons => {
             polygons.forEach(p => {
-                // 1. pointsJson (String) -> array van {x,y,z}
                 const points = JSON.parse(p.pointsJson);
-
-                // 2. array -> Cesium.Cartesian3[]
                 const positions = points.map(pt =>
                     new Cesium.Cartesian3(pt.x, pt.y, pt.z)
                 );
-
-                // 3. polygon tekenen in Cesium
                 const oppNumber = parseFloat(p.oppervlakte);
                 const entity = viewer.entities.add({
                     polygon: {
@@ -37,19 +42,13 @@ function setup() {
                     },
                     properties: {
                         id: p.id,
-                        oppervlakte: new Cesium.ConstantProperty(
-                            oppNumber || 0
-                        )
+                        oppervlakte: new Cesium.ConstantProperty(oppNumber || 0)
                     }
                 });
-
-
-                // 4. database-id bewaren voor later verwijderen
                 entity.polygonId = p.id;
             });
         });
 
-    //Spoordok polygon coordinates
     const coords = [
         5.787759928698073, 53.197831145908000,
         5.789123554275904, 53.197639959578440,
@@ -60,7 +59,6 @@ function setup() {
         5.786410809746187, 53.197040324210970,
     ];
 
-    //Spoordok polygon entity
     const SpoordokPolygon = viewer.entities.add({
         name: "Spoordok",
         polygon: {
@@ -69,22 +67,15 @@ function setup() {
         },
     });
 
-    //Calculate area of polygon
     const areaM2 = areaFromDegreesArrayMeters(coords);
-
-    //Display area of polygon in the browser
     const areaInfoEl = document.getElementById("areaInfo");
     if (areaInfoEl) {
         areaInfoEl.textContent = `Oppervlakte Spoordok: ${areaM2.toFixed(0)} m²`;
     }
 
-    // Dit stuk code maakt de handleiding inklapbaar:
-    // bij het klikken op de "?"-knop wordt het help-paneel getoond of verborgen.
     const btn = document.getElementById("helpToggle");
     const panel = document.getElementById("helpPanel");
-
     btn.addEventListener("click", () => {
         panel.classList.toggle("hidden");
     });
-
 }
