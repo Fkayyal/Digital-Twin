@@ -1,4 +1,4 @@
-﻿html, body, #cesiumContainer {
+html, body, #cesiumContainer {
     width: 100%;
     height: 100%;
     margin: 0;
@@ -176,6 +176,7 @@
     color: white;
 }
 
+
 .table, table{
     font-family: Roboto;
 }
@@ -185,4 +186,18 @@
     align-content: center;
     vertical-align: middle;
     background-color:#202124;
+}
+
+.modal-title{
+    font-size: 1rem !important;
+}
+
+.modal-footer{
+    background: linear-gradient(to right, #202124, #202125);
+}
+
+#configDefaultValues td:last-child,
+#configGoalsValues td:last-child {
+    text-align: right;
+    padding-right: 2rem;
 }
