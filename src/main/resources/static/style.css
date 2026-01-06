@@ -201,3 +201,17 @@ html, body, #cesiumContainer {
     text-align: right;
     padding-right: 2rem;
 }
+
+#messageOverlay {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-family: sans-serif;
+    display: none;
+    z-index: 1000;
+}
