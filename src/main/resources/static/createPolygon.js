@@ -176,7 +176,33 @@ export class PolygonDrawer {
             }
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK, Cesium.KeyboardEventModifier.CTRL);
 
+        // CTRL + Right _CLICK → Polygon extrude-hoogte functie, skip "Spoordok"
+        handler.setInputAction(function (event) {
+            var pickedObject = that.viewer.scene.pick(event.position);
+            if (Cesium.defined(pickedObject)) {
+                var entity = that.viewer.entities.getById(pickedObject.id.id);
+                // Skip als het de "Spoordok" polygon is
+                if (entity && entity.name !== "Spoordok") {
+                    that.create3DObject(entity, -10);
 
+                    // HOOGTE OPSLAAN
+                    const nieuweHoogte = Math.max(
+                        0,
+                        Math.round(entity.polygon.extrudedHeight.getValue(that.viewer.clock.currentTime))
+                    );
+                    if (entity.polygonId) {
+                        fetch(`http://localhost:8080/polygons/${entity.polygonId}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ hoogte: nieuweHoogte })
+                        });
+                    }
+                    console.log("Hoogte opgeslagen:", nieuweHoogte);
+                } else if (entity && entity.name === "Spoordok") {
+                    console.log("Kan 'Spoordok' niet verlagen");
+                }
+            }
+        }, Cesium.ScreenSpaceEventType.RIGHT_CLICK, Cesium.KeyboardEventModifier.CTRL);
 
         handler.setInputAction(function (event) {
             if (Cesium.defined(that.floatingPoint)) {
@@ -231,9 +257,10 @@ export class PolygonDrawer {
 
     }
 
-    create3DObject(basePolygon, height) {
-        let huidigeHoogte = basePolygon.polygon.extrudedHeight?.getValue() || height;
-        basePolygon.polygon.extrudedHeight = new Cesium.ConstantProperty(huidigeHoogte * 1.5);
+    create3DObject(basePolygon, delta) {
+        const current = Number(basePolygon.polygon.extrudedHeight?.getValue(this.viewer.clock.currentTime)) || 0;
+        const next = Math.min(300, Math.max(0, current + delta)); // 0..300 clamp
+        basePolygon.polygon.extrudedHeight = new Cesium.ConstantProperty(next);
     }
 
 
