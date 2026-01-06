@@ -1,4 +1,42 @@
 ﻿import {areaFromCartesian3ArrayMeters} from "./AreaCalculator.js";
+import {showMessage} from "./ui.js"
+
+const coords = [
+    5.787759928698073, 53.197831145908000,
+    5.789123554275904, 53.197639959578440,
+    5.788934967759822, 53.196023531984740,
+    5.776937964005922, 53.194528716741345,
+    5.774587885853288, 53.196901277127026,
+    5.774703939093954, 53.197622578976200,
+    5.786410809746187, 53.197040324210970,
+];
+
+const allowedAreaLonLat = [];
+for (let i = 0; i < coords.length; i += 2) {
+    allowedAreaLonLat.push({ x: coords[i], y: coords[i + 1] });
+}
+
+function isInsideAllowedArea(cartesian) {
+    if (!Cesium.defined(cartesian)) return false;
+
+    const carto = Cesium.Cartographic.fromCartesian(cartesian); // [web:240][web:253]
+    const x = Cesium.Math.toDegrees(carto.longitude);
+    const y = Cesium.Math.toDegrees(carto.latitude);
+
+    let inside = false;
+    for (let i = 0, j = allowedAreaLonLat.length - 1; i < allowedAreaLonLat.length; j = i++) {
+        const xi = allowedAreaLonLat[i].x, yi = allowedAreaLonLat[i].y;
+        const xj = allowedAreaLonLat[j].x, yj = allowedAreaLonLat[j].y;
+
+        const intersect =
+            (yi > y) !== (yj > y) &&
+            x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
+
+        if (intersect) inside = !inside;
+    }
+    return inside;
+}
+
 
 export class PolygonDrawer {
     constructor(viewer) {
@@ -91,6 +129,11 @@ export class PolygonDrawer {
             var ray = that.viewer.camera.getPickRay(event.position);
             var earthPosition = that.viewer.scene.globe.pick(ray, that.viewer.scene);
             if (Cesium.defined(earthPosition)) {
+                if (!isInsideAllowedArea(earthPosition)) {
+                    console.log("Klik buiten Spoordok, punt genegeerd");
+                    showMessage("Je kunt alleen binnen Spoordok tekenen");
+                    return;
+                }
                 if (that.activeShapePoints.length === 0) {
                     that.floatingPoint = that.createPoint(earthPosition);
                     that.activeShapePoints.push(earthPosition);
