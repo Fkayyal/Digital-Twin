@@ -29,7 +29,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Naam</th>
-                            <th>Kosten/m²</th>
+                            <th>Kosten per meter</th>
                             <th>Opbrengst</th>
                             <th>Eenheidstype</th>
                             <th>Score</th>
@@ -68,8 +68,8 @@
                         <input type="hidden" id="soortIdEdit">
                         <div class="mb-3"><label class="form-label">Naam</label><input id="naamEdit" class="form-control" readonly>
                         </div>
-                        <div class="mb-3"><label class="form-label">Kosten per m²</label><input id="kostenPerMeterEdit" type="number" step="0.01" class="form-control"></div>
-                        <div class="mb-3"><label class="form-label">Opbrengst</label><input id="opbrengstEdit" type="number" step="0.01" class="form-control"></div>
+                        <div class="mb-3"><label class="form-label">Kosten per m²</label><input id="kostenPerMeterEdit" type="number" step="0.1" class="form-control"></div>
+                        <div class="mb-3"><label class="form-label">Opbrengst</label><input id="opbrengstEdit" type="number" step="0.1" class="form-control"></div>
                         <div class="mb-3">
                             <label class="form-label">Eenheidstype</label>
                             <select id="eenheidstypeEdit" class="form-select">
@@ -149,7 +149,7 @@
         <div class="row">
             <div class="col-12 text-center">
                 <a href="index.html">
-                    <button class="btn btn-sm btn-outline-light" id="backButton">
+                    <button class="btn btn-sm btn-outline-light m-3" id="backButton">
                         Terug
                     </button>
                 </a>

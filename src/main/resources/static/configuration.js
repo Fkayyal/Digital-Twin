@@ -1,4 +1,4 @@
-// === STANDAARDWAARDEN (zoals je al had) ===
+// === STANDAARDWAARDEN ===
 export async function populateConfigs() {
     const tbody = document.querySelector('#configDefaultValues tbody');
     if (!tbody) return;
@@ -96,7 +96,7 @@ export function getConfigInputs() {
     };
 }
 
-// === DOELEN (zelfde structuur/aanpak) ===
+// === DOELEN  ===
 export async function populateDoelen() {
     const tbody = document.querySelector('#configGoalsValues tbody');
     if (!tbody) return;
