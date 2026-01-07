@@ -10,7 +10,8 @@
     Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
 
     const osm = new Cesium.OpenStreetMapImageryProvider({
-        url: 'https://tile.openstreetmap.org/'
+        url: 'https://tile.openstreetmap.org/',
+        maximumLevel: 18
     });
 
     const viewer = new Cesium.Viewer(containerId, {

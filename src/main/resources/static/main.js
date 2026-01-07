@@ -3,6 +3,7 @@ import {PolygonDrawer} from './createPolygon.js';
 import {areaFromDegreesArrayMeters} from './AreaCalculator.js';
 import {setupPolygonInfoHandler} from './inspectPolygon.js';
 import {initDoelenModal, initModalEdit, populateConfigs, populateDoelen} from './configuration.js';
+import { setupLLMAnalyzer } from './LLM.js'
 
 window.onload = setup;
 
@@ -20,8 +21,14 @@ async function setup() {
 
 
     viewer = initializeCesiumViewer("cesiumContainer");
+    window.viewer = viewer;
+
+
     polygonDrawer = new PolygonDrawer(viewer);
     setupPolygonInfoHandler(viewer);
+
+    //LLM Analyzer
+    setupLLMAnalyzer(1);
 
     fetch('http://localhost:8080/polygons')
         .then(r => r.json())
@@ -73,9 +80,9 @@ async function setup() {
         areaInfoEl.textContent = `Oppervlakte Spoordok: ${areaM2.toFixed(0)} m²`;
     }
 
-    const btn = document.getElementById("helpToggle");
-    const panel = document.getElementById("helpPanel");
-    btn.addEventListener("click", () => {
-        panel.classList.toggle("hidden");
-    });
+    //const btn = document.getElementById("helpToggle");
+    //const panel = document.getElementById("helpPanel");
+    //btn.addEventListener("click", () => {
+        //panel.classList.toggle("hidden");
+    //});
 }
