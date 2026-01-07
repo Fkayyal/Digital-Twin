@@ -231,3 +231,9 @@ html, body, #cesiumContainer {
 .btn-close{
     filter: brightness(0) invert(1);
 }
+
+#col-result{
+    margin-top: 10px;
+    padding: 10px;
+    background: linear-gradient(to right, #5b957e, #1a2c3f);
+}
