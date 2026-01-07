@@ -80,9 +80,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>  <!-- Extra Jackson -->
         </dependency>
-
     </dependencies>
-
     <build>
         <plugins>
             <plugin>

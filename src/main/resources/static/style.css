@@ -220,11 +220,11 @@ html, body, #cesiumContainer {
 }
 
 #polygonInfo{
-    padding: 0 1rem 0 1rem;
+    padding: 0 1rem 0 0;
 }
 
 #offcanvasRight{
-    background: linear-gradient(to right, #191c1f);
+    background: #191c1f;
     color: white;
 }
 
@@ -236,4 +236,21 @@ html, body, #cesiumContainer {
     margin-top: 10px;
     padding: 10px;
     background: linear-gradient(to right, #5b957e, #1a2c3f);
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link{
+    background: linear-gradient(to right, #5b957e, #1a2c3f);
+    margin-bottom: 0;
+}
+.tab-content>.active{
+    gap: 0;
+}
+
+.nav-pills .nav-link{
+    color: gray;
+    border-color: gray;
+}
+
+.tab-pane{
+   min-height: 32rem;
 }

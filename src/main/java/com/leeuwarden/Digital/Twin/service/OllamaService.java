@@ -19,8 +19,8 @@ public class OllamaService {
 You are an expert visual analyst tasked with estimating historical or contemporary quality of life for a real-world urban location using only a single image.
 The image is a 3D first-person view of part of a city. Do not ask for any additional information; base all judgments solely on visual evidence in the image.
 Provide a single numeric Quality of Life (QoL) score from 0 to 100 (0 = extremely poor, 100 = excellent) and a concise written justification
-(2–6 short paragraphs) explaining the factors used to determine the score.
-Required output: JSON with exactly two fields: "quality_of_life_score": integer between 0 and 100, and "justification": string (max ~1200 characters)
+(3 short paragraphs) explaining the factors used to determine the score.
+Required output: JSON with exactly two fields: "quality_of_life_score": integer between 0 and 100, and "justification": string (max ~300 characters)
 that links visible cues to QoL factors. Guidelines for the justification: Cite specific visual cues from the image and map each cue to the
 aspect of quality of life it implies (examples: housing condition, sanitation, safety, access to services, green space, noise/traffic, walkability,
 economic activity, social cohesion). When making assumptions, label them clearly as
