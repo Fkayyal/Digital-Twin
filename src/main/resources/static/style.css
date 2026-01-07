@@ -3,7 +3,6 @@ html, body, #cesiumContainer {
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden;
     font-family: Roboto;
 }
 
@@ -214,4 +213,21 @@ html, body, #cesiumContainer {
     font-family: sans-serif;
     display: none;
     z-index: 1000;
+}
+
+.cesium-viewer-toolbar{
+    display: none;
+}
+
+#polygonInfo{
+    padding: 0 1rem 0 1rem;
+}
+
+#offcanvasRight{
+    background: linear-gradient(to right, #191c1f);
+    color: white;
+}
+
+.btn-close{
+    filter: brightness(0) invert(1);
 }

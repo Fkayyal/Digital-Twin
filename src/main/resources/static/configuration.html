@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script type="module" src="main.js"></script>
+    <script src="main.js" type="module"></script>
     <link href="Cesium-1.135/Build/Cesium/Widgets/widgets.css" rel="stylesheet"> <!-- Cesium CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> <!-- Bootstrap CSS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> <!-- Bootstrap Js -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap Js -->
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler.min.css" /> <!-- Tabler CSS -->
-    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/js/tabler.min.js"> </script> <!-- Tabler Js -->
+    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler.min.css" rel="stylesheet"/>
+    <!-- Tabler CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/js/tabler.min.js"></script> <!-- Tabler Js -->
 
     <link href="style.css" rel="stylesheet"> <!-- Style CSS -->
 
 </head>
 <body class="d-flex flex-column min-vh-100">
-<section id="configuration" class="pb-6 flex-grow-1">
+<section class="pb-6 flex-grow-1" id="configuration">
     <div class="container">
         <div class="row">
             <div class="col-12 pt-3 pb-3">
@@ -24,12 +27,12 @@
             <div class="col-12">
                 <h2 class="pt-4"> Standaardwaarden</h2>
                 <div class="table-responsive card">
-                    <table id="configDefaultValues" class="table table-vcenter p-3">
+                    <table class="table table-vcenter p-3" id="configDefaultValues">
                         <thead>
                         <tr>
                             <th>ID</th>
                             <th>Naam</th>
-                            <th>Kosten/m²</th>
+                            <th>Kosten per meter</th>
                             <th>Opbrengst</th>
                             <th>Eenheidstype</th>
                             <th>Score</th>
@@ -41,13 +44,13 @@
                         <tbody>
                         <tr>
                             <td data-field="configDId">...</td>
-                            <td data-field="configDDescription" class="text-secondary">...</td>
-                            <td data-field="configDCost" class="text-secondary">...</td>
-                            <td data-field="configDGain" class="text-secondary">...</td>
-                            <td data-field="configDPeople" class="text-secondary">...</td>
-                            <td data-field="configDScore" class="text-secondary">...</td>
+                            <td class="text-secondary" data-field="configDDescription">...</td>
+                            <td class="text-secondary" data-field="configDCost">...</td>
+                            <td class="text-secondary" data-field="configDGain">...</td>
+                            <td class="text-secondary" data-field="configDPeople">...</td>
+                            <td class="text-secondary" data-field="configDScore">...</td>
                             <td class="text-end">
-                            <a class="text-green configDEdit" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</a>
+                                <a class="text-green configDEdit" data-bs-target="#exampleModal" data-bs-toggle="modal">Edit</a>
                             </td>
                         </tr>
                         </tbody>
@@ -57,32 +60,45 @@
         </div>
 
         <!-- Standaardwaarden modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="exampleModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="exampleModalLabel">Edit data</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
                     </div>
                     <div class="modal-body">
-                        <input type="hidden" id="soortIdEdit">
-                        <div class="mb-3"><label class="form-label">Naam</label><input id="naamEdit" class="form-control" readonly>
+                        <input id="soortIdEdit" type="hidden">
+                        <div class="mb-3"><label class="form-label">Naam</label><input class="form-control"
+                                                                                       id="naamEdit" readonly>
                         </div>
-                        <div class="mb-3"><label class="form-label">Kosten per m²</label><input id="kostenPerMeterEdit" type="number" step="0.01" class="form-control"></div>
-                        <div class="mb-3"><label class="form-label">Opbrengst</label><input id="opbrengstEdit" type="number" step="0.01" class="form-control"></div>
+                        <div class="mb-3"><label class="form-label">Kosten per m²</label><input class="form-control"
+                                                                                                id="kostenPerMeterEdit"
+                                                                                                step="0.1"
+                                                                                                type="number">
+                        </div>
+                        <div class="mb-3"><label class="form-label">Opbrengst</label><input class="form-control"
+                                                                                            id="opbrengstEdit"
+                                                                                            step="0.1"
+                                                                                            type="number"></div>
                         <div class="mb-3">
                             <label class="form-label">Eenheidstype</label>
-                            <select id="eenheidstypeEdit" class="form-select">
+                            <select class="form-select" id="eenheidstypeEdit">
                                 <option value="m2">m2</option>
                                 <option value="m3">m3</option>
                             </select>
                         </div>
-                        <div class="mb-3"><label class="form-label">Leefbaarheids Score</label><input id="leefbaarheidsScoreEdit" type="number" min="1" max="10" class="form-control"></div>
-                        <div class="mb-3"><label class="form-label">Aantal Mensen</label><input id="aantalMensenEdit" type="number" min="0" class="form-control"></div>
+                        <div class="mb-3"><label class="form-label">Leefbaarheids Score</label><input
+                                class="form-control" id="leefbaarheidsScoreEdit" max="10" min="1" type="number"></div>
+                        <div class="mb-3"><label class="form-label">Aantal Mensen</label><input class="form-control"
+                                                                                                id="aantalMensenEdit"
+                                                                                                min="0"
+                                                                                                type="number">
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn" data-bs-dismiss="modal">Annuleren</button>
-                        <button id="saveBtn" type="button" class="btn">Opslaan</button>
+                        <button class="btn" data-bs-dismiss="modal" type="button">Annuleren</button>
+                        <button class="btn" id="saveBtn" type="button">Opslaan</button>
                     </div>
                 </div>
             </div>
@@ -92,7 +108,7 @@
         <div class="col-12">
             <h2 class="pt-4"> Doelen</h2>
             <div class="table-responsive card">
-                <table id="configGoalsValues" class="table table-vcenter p-3">
+                <table class="table table-vcenter p-3" id="configGoalsValues">
                     <thead>
                     <tr>
                         <th>DOELID</th>
@@ -105,10 +121,11 @@
                     <tbody>
                     <tr>
                         <td data-field="configGId">...</td>
-                        <td data-field="configGDescription" class="text-secondary">...</td>
-                        <td data-field="configGScore" class="text-secondary">...</td>
+                        <td class="text-secondary" data-field="configGDescription">...</td>
+                        <td class="text-secondary" data-field="configGScore">...</td>
                         <td class="text-end" style="text-align: right;">
-                        <a class="text-green configGEdit" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</a>
+                            <a class="text-green configGEdit" data-bs-target="#exampleModal"
+                               data-bs-toggle="modal">Edit</a>
                         </td>
                     </tr>
                     </tbody>
@@ -122,22 +139,22 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="doelenModalLabel">Doel bewerken</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <button class="btn-close" data-bs-dismiss="modal" type="button"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="doelIdEdit">
+                    <input id="doelIdEdit" type="hidden">
                     <div class="mb-3">
                         <label class="form-label">Omschrijving</label>
-                        <input id="doelOmschrijvingEdit" class="form-control">
+                        <input class="form-control" id="doelOmschrijvingEdit">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Aantal</label>
-                        <input id="doelAantalEdit" type="number" class="form-control">
+                        <input class="form-control" id="doelAantalEdit" type="number">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn" data-bs-dismiss="modal">Annuleren</button>
-                    <button id="saveDoelBtn" class="btn">Opslaan</button>
+                    <button class="btn" data-bs-dismiss="modal" type="button">Annuleren</button>
+                    <button class="btn" id="saveDoelBtn">Opslaan</button>
                 </div>
             </div>
         </div>
@@ -149,7 +166,7 @@
         <div class="row">
             <div class="col-12 text-center">
                 <a href="index.html">
-                    <button class="btn btn-sm btn-outline-light" id="backButton">
+                    <button class="btn btn-sm btn-outline-light m-3" id="backButton">
                         Terug
                     </button>
                 </a>

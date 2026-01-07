@@ -1,8 +1,8 @@
-import { initializeCesiumViewer } from './cesiumSettings.js';
-import { PolygonDrawer } from './createPolygon.js';
-import { areaFromDegreesArrayMeters } from './AreaCalculator.js';
-import { setupPolygonInfoHandler } from './inspectPolygon.js';
-import { populateConfigs, initModalEdit, populateDoelen, initDoelenModal } from './configuration.js';
+import {initializeCesiumViewer} from './cesiumSettings.js';
+import {PolygonDrawer} from './createPolygon.js';
+import {areaFromDegreesArrayMeters} from './AreaCalculator.js';
+import {setupPolygonInfoHandler} from './inspectPolygon.js';
+import {initDoelenModal, initModalEdit, populateConfigs, populateDoelen} from './configuration.js';
 
 window.onload = setup;
 
