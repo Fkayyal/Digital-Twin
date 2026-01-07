@@ -13,7 +13,7 @@ const coords = [
 
 const allowedAreaLonLat = [];
 for (let i = 0; i < coords.length; i += 2) {
-    allowedAreaLonLat.push({ x: coords[i], y: coords[i + 1] });
+    allowedAreaLonLat.push({x: coords[i], y: coords[i + 1]});
 }
 
 function isInsideAllowedArea(cartesian) {
@@ -165,8 +165,8 @@ export class PolygonDrawer {
                     if (entity.polygonId) {
                         fetch(`http://localhost:8080/polygons/${entity.polygonId}`, {
                             method: 'PUT',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ hoogte: nieuweHoogte })
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({hoogte: nieuweHoogte})
                         });
                     }
                     console.log("Hoogte opgeslagen:", nieuweHoogte);
@@ -193,8 +193,8 @@ export class PolygonDrawer {
                     if (entity.polygonId) {
                         fetch(`http://localhost:8080/polygons/${entity.polygonId}`, {
                             method: 'PUT',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ hoogte: nieuweHoogte })
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({hoogte: nieuweHoogte})
                         });
                     }
                     console.log("Hoogte opgeslagen:", nieuweHoogte);
@@ -238,7 +238,7 @@ export class PolygonDrawer {
                         that.viewer.entities.remove(entity);
                         console.log("Entity removed:", entity);
                         // bijbehorende polygoonpunten werwijderen
-                        if(that.pointEntities && that.pointEntities.length > 0){
+                        if (that.pointEntities && that.pointEntities.length > 0) {
                             that.pointEntities.forEach(p => that.viewer.entities.remove(p));
                             that.pointEntities = [];
                         }
@@ -281,7 +281,7 @@ function sendPolygonToBackend(points, cesiumEntity) {
     // Cesium Cartesian3 → simpel object {x, y, z}.
     // map: een array methode die elke element in de array langs gaat
     // en daarvan een nieuwe object maakt, dit hij opslaat in een nieuwe array.
-    const simplePoints = points.map(p => ({ x: p.x, y: p.y, z: p.z }));
+    const simplePoints = points.map(p => ({x: p.x, y: p.y, z: p.z}));
     // Maakt JSON-string van de objecten in de nieuwe array
     const pointsJsonString = JSON.stringify(simplePoints);
 
@@ -296,7 +296,7 @@ function sendPolygonToBackend(points, cesiumEntity) {
 
     fetch('http://localhost:8080/polygons', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         // Hier wordt zo’n JSON‑object gemaakt, dat door DTO wordt verwacht { "pointsJson": "..." }.
         body: JSON.stringify({
             pointsJson: pointsJsonString,

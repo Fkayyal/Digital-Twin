@@ -27,7 +27,7 @@
     const xyPoints = cartographics.map(c => {
         const p = ellipsoid.cartographicToCartesian(c);
         const local = Cesium.Matrix4.multiplyByPoint(fixedToEnu, p, new Cesium.Cartesian3());
-        return { x: local.x, y: local.y };
+        return {x: local.x, y: local.y};
     });
 
     let sum = 0;

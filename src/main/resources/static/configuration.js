@@ -26,7 +26,7 @@ export async function populateConfigs() {
                 </td>
             `;
         });
-    } catch(e) {
+    } catch (e) {
         tbody.innerHTML = '<tr><td colspan="8">Geen data</td></tr>';
     }
 }
@@ -74,7 +74,7 @@ export function initModalEdit() {
 
             populateConfigs();
 
-        } catch(e) {
+        } catch (e) {
             alert('Fout: ' + e);
         } finally {
             btn.disabled = false;
@@ -156,7 +156,7 @@ export function initDoelenModal() {
         try {
             await fetch(`/doelen/${currentDoelId}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(getDoelInputs())
             });
 

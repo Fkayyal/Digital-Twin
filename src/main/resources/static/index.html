@@ -1,9 +1,10 @@
 <html>
 <head>
     <script src="Cesium-1.135/Build/Cesium/Cesium.js"></script>
-    <script type="module" src="main.js"></script>
+    <script src="main.js" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <link href="Cesium-1.135/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
 </head>
@@ -25,7 +26,7 @@
 
                     <!-- Info selected gebied -->
                     <div class="col-12 pt-3">
-                        <p> <span class="fw-bold">Gebied</span><br>
+                        <p><span class="fw-bold">Gebied</span><br>
                             Id: <span id="infoId">...</span><br>
                             Oppervlakte: <span id="infoOppervlakte">...</span><br>
                             Hoogte: <span id="infoHoogte">...</span><br>
@@ -35,7 +36,7 @@
 
                 <!-- Polygonen -->
                 <div class="row">
-                    <div class="col-12 p-3">
+                    <div class="col-12" id="polygonInfo">
                         <p>
                             <span class="fw-bold">Polygonen tekenen</span><br>
                             <span class="fst-italic"> Hier kun je de verschillende soorten polygonen tekenen </span>
@@ -136,51 +137,77 @@
                 </div>
 
                 <hr>
-                <div class="row mb-3">
-                    <div class="col-12 d-grid ">
-                        <a href="configuration.html" class="btn btn-outline-light">
-                            <i class="bi bi-sliders fs-4"></i>
-                            <span class="ms-2">Configuratie</span>
-                        </a>
+                <div class="row">
+                    <div class="col-12">
+                        <p><span class="fw-bold pb-3">Statistieken </span><br>
+                            Bewoners: ...<br>
+                            Werkenden: ...<br>
+                            Natuur & Groen: ...<br>
+                            Bebouwing bedrijven: ...<br>
+                            Parkeerplaatsen: ...<br>
+                            Score: ...
+                        </p>
                     </div>
                 </div>
 
+                <hr>
+                <!-- Config and Controls buttons -->
+                <div class="row mb-3 g-2">
+                    <div class="col-xl-6 col-12 d-grid ">
+                        <a class="btn btn-outline-light" href="configuration.html">
+                            <i class="bi bi-sliders fs-4"></i>
+                            <span class="ms-2">Config</span>
+                        </a>
+                    </div>
+                    <div class="col-xl-6 col-12 d-grid">
+                        <a aria-controls="offcanvasRight" class="btn btn-outline-light" data-bs-target="#offcanvasRight"
+                           data-bs-toggle="offcanvas" href="configuration.html">
+                            <i class="bi bi-info-circle fs-4"></i>
+                            <span class="ms-2">Controls</span>
+                        </a>
+                    </div>
+                </div>
             </div>
             <!-- Sidebar end -->
-
             <!-- Cesium viewer, 75% van scherm -->
             <div class="col-10 p-0">
-
                 <!-- Kan foutmeldingen tonen zoals buiten Spoordok tekenen -->
                 <div id="messageOverlay"></div>
-
-                <div id="cesiumContainer" class="h-100 w-100"></div>
-
-                <!-- Help knop -->
-                <button id="helpToggle" title="Help"> ? </button>
-
-                <div id="helpPanel" class="hidden">
-                    <div class="sectionTitle">Navigeren</div>
-                    <ul>
-                        <li><span>Zoom in/uit: </span> Scroll met het muiswiel.</li>
-                        <li><span>Bewegen: </span> Houd de linkermuisknop ingedrukt en sleep om het beeld te verplaatsen.</li>
-                    </ul>
-
-                    <div class="sectionTitle">Polygonen</div>
-                    <ul>
-                        <li><span>Polygoon tekenen:</span> Linksklik om punten te plaatsen, rechtsklik om af te sluiten (wordt daarna opgeslagen).</li>
-                        <li><span>Info tonen:</span> SHIFT + linksklik op een polygoon.</li>
-                        <li><span>Hoogte verhogen: </span> CTRL + linksklik op een polygoon.</li>
-                        <li><span>Hoogte verlagen: </span> CTRL + rechtsklik op een polygoon.</li>
-                        <li><span>Verwijderen: </span> ALT + linksklik op een polygoon (niet Spoordok).</li>
-                    </ul>
-                </div>
-                </div>
-            </div>
-            </div>
-            <!-- Cesium viewer end -->
+                <div class="h-100 w-100" id="cesiumContainer"></div>
             </div>
         </div>
-    </section>
-    </body>
+    </div>
+    </div>
+    <!-- Cesium viewer end -->
+    </div>
+    </div>
+
+
+    <!-- Offcanvas Controls -->
+    <div aria-labelledby="offcanvasRightLabel" class="offcanvas offcanvas-end" id="offcanvasRight" tabindex="-1">
+        <div class="offcanvas-header">
+            <h5 id="offcanvasRightLabel"><i class="bi bi-info-circle fs-4"></i> Controls</h5>
+            <button aria-label="Close" class="btn-close text-reset" data-bs-dismiss="offcanvas" type="button"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="sectionTitle fw-semibold">Navigeren</div>
+            <ul>
+                <li><span>Zoom in/uit: </span> Scroll met het muiswiel.</li>
+                <li><span>Bewegen: </span> Houd de linkermuisknop ingedrukt en sleep om het beeld te verplaatsen.</li>
+            </ul>
+
+            <div class="sectionTitle fw-semibold">Polygonen</div>
+            <ul>
+                <li><span>Polygoon tekenen:</span> Linksklik om punten te plaatsen, rechtsklik om af te sluiten (wordt
+                    daarna opgeslagen).
+                </li>
+                <li><span>Info tonen:</span> SHIFT + linksklik op een polygoon.</li>
+                <li><span>Hoogte verhogen: </span> CTRL + linksklik op een polygoon.</li>
+                <li><span>Hoogte verlagen: </span> CTRL + rechtsklik op een polygoon.</li>
+                <li><span>Verwijderen: </span> ALT + linksklik op een polygoon (niet Spoordok).</li>
+            </ul>
+        </div>
+    </div>
+</section>
+</body>
 </html>

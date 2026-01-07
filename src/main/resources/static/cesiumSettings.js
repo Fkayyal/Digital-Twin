@@ -15,7 +15,7 @@
 
     const viewer = new Cesium.Viewer(containerId, {
         baseLayerPicker: false,
-        imageryProvider: false,  // zal handmatig OSM-layer added worden
+        imageryProvider: false,
         infoBox: false,
         selectionIndicator: false,
         shadows: true,
