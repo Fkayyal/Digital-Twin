@@ -29,6 +29,7 @@ public class PolygonController {
     @PostMapping
     public Polygon createPolygon(@RequestBody PolygonRequestDTO polygonRequestDTO) {
         // Zet de data uit de request (DTO) om naar een Polygon entity
+        System.out.println("soortId = " + polygonRequestDTO.getSoortId());
         Polygon polygon = polygonMapper.toEntity(polygonRequestDTO);
         return polygonRepository.save(polygon);
     }

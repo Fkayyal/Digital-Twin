@@ -31,6 +31,9 @@ public class Soort {
     @OneToMany(mappedBy = "soort", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Gebiedsdeel> gebiedsdeelen;
 
+    @Column(nullable = false, unique = true)
+    private String code;
+
     public Soort() {
     }
 
@@ -107,5 +110,13 @@ public class Soort {
 
     public void setGebiedsdeelen(List<Gebiedsdeel> gebiedsdeelen) {
         this.gebiedsdeelen = gebiedsdeelen;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

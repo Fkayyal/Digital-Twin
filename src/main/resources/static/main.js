@@ -5,10 +5,15 @@ import {setupPolygonInfoHandler} from './inspectPolygon.js';
 import {initDoelenModal, initModalEdit, populateConfigs, populateDoelen} from './configuration.js';
 import { setupLLMAnalyzer } from './LLM.js'
 
+
 window.onload = setup;
 
 let viewer;
 let polygonDrawer;
+
+let soortenByCode = {};
+let selectedSoortId = null; // de gekozen FK-id
+let selectedSoortCode = null;
 
 async function setup() {
 
@@ -19,6 +24,31 @@ async function setup() {
     populateDoelen();
     initDoelenModal();
 
+    function setupSoortButtons() {
+        document.querySelectorAll(".soort-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const soortCode = btn.dataset.soortCode; // 1) Lees de stabiele code uit de HTML (moet exact matchen met data.sql codes)
+                const soortId = soortenByCode[soortCode]; // 2) Vertaal code -> soortId (soortId komt uit de database via GET /soorten)
+
+                // 3) Veiligheidscheck: als dit faalt, klopt je HTML code niet of /soorten is niet goed geladen
+                if (soortId == null) {
+                    console.warn("Onbekende soortCode of soortId ontbreekt:", soortCode, soortenByCode);
+                    return;
+                }
+
+                // 4) Opslaan (FK) + kleur zetten (beiden op basis van stabiele code)
+                selectedSoortId = soortId;
+                polygonDrawer.setSoortId(soortId);
+                polygonDrawer.setSoortCode(soortCode);
+            });
+        });
+    }
+
+    async function loadSoorten() {
+        const res = await fetch("http://localhost:8080/soorten");
+        const soorten = await res.json(); // JSON -> JS object
+        soortenByCode = Object.fromEntries(soorten.map(s => [s.code, s.soortId])); // array -> object map
+    }
 
     viewer = initializeCesiumViewer("cesiumContainer");
     window.viewer = viewer;
@@ -26,6 +56,9 @@ async function setup() {
 
     polygonDrawer = new PolygonDrawer(viewer);
     setupPolygonInfoHandler(viewer);
+
+    await loadSoorten();
+    setupSoortButtons();
 
     //LLM Analyzer
     setupLLMAnalyzer(1);
@@ -79,10 +112,4 @@ async function setup() {
     if (areaInfoEl) {
         areaInfoEl.textContent = `Oppervlakte Spoordok: ${areaM2.toFixed(0)} m²`;
     }
-
-    //const btn = document.getElementById("helpToggle");
-    //const panel = document.getElementById("helpPanel");
-    //btn.addEventListener("click", () => {
-        //panel.classList.toggle("hidden");
-    //});
 }
