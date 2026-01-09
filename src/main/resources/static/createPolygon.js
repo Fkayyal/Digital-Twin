@@ -19,7 +19,7 @@ for (let i = 0; i < coords.length; i += 2) {
 function isInsideAllowedArea(cartesian) {
     if (!Cesium.defined(cartesian)) return false;
 
-    const carto = Cesium.Cartographic.fromCartesian(cartesian); // [web:240][web:253]
+    const carto = Cesium.Cartographic.fromCartesian(cartesian);
     const x = Cesium.Math.toDegrees(carto.longitude);
     const y = Cesium.Math.toDegrees(carto.latitude);
 
@@ -337,6 +337,12 @@ function sendPolygonToBackend(points, cesiumEntity, soortId) {
     if (points && points.length >= 3) {
         areaM2 = areaFromCartesian3ArrayMeters(points);
     }
+
+    // Zet de oppervlakte direct op de Cesium-entity zodat er geen F5 meer nodig is
+    const roundedArea = Math.round(areaM2);
+
+    cesiumEntity.properties = cesiumEntity.properties || new Cesium.PropertyBag();
+    cesiumEntity.properties.oppervlakte = new Cesium.ConstantProperty(roundedArea);
 
     const hoogte = cesiumEntity.polygon.extrudedHeight
         ? cesiumEntity.polygon.extrudedHeight.getValue()
