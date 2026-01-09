@@ -10,7 +10,7 @@ public class PolygonRequestDTO {
     private String pointsJson;
     private String oppervlakte;
     private double hoogte;
-    private String soort;
+    private Long soortId;
 
     public PolygonRequestDTO() {}
 
@@ -34,6 +34,11 @@ public class PolygonRequestDTO {
     public double getHoogte() { return hoogte; }
     public void setHoogte(double hoogte) { this.hoogte = hoogte; }
 
-    public String getSoort() { return soort; }
-    public void setSoort(String soort) { this.soort = soort; }
+    public Long getSoortId() {
+        return soortId;
+    }
+
+    public void setSoortId(Long soortId) {
+        this.soortId = soortId;
+    }
 }

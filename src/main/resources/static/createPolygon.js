@@ -42,6 +42,9 @@ export class PolygonDrawer {
     constructor(viewer) {
         this.viewer = viewer;
         this.drawingMode = "polygon";
+        this.selectedSoortCode = null;     // welke soort is gekozen
+        this.selectedColorCss = '#2f3f36'; // default kleur (tijdelijk)
+        this.selectedSoortId = null;
         this.activeShapePoints = [];
         this.activeShape = undefined;
         this.floatingPoint = undefined;
@@ -49,6 +52,31 @@ export class PolygonDrawer {
         this.pointEntities = [];
         this.setupInputActions();
     }
+
+    // Hier wordt de kleur op basis van een stabiele soort-code gekozen (verandert niet als DB-naam wijzigt)
+    setSoortCode(soortCode) {
+        this.selectedSoortCode = soortCode; // Kan wel weg, maar is handig voor debug
+
+        // Map van stabiele codes -> kleur (CSS hex)
+        const kleurMapCode = {
+            VRIJSTAANDE_WONING: '#005C97',
+            APPARTEMENT: '#e53935',
+            RIJTJESWONING: '#ffb347',
+            BEDRIJFSGEBOUW: '#205961',
+            PARK_GROEN: '#00906b',
+            WEGEN: '#6c757d',
+            PARKEERPLAATSEN: '#adb5bd',
+            OVERDEKTE_PARKEERPLAATSEN: '#343a40'
+        };
+
+        // Fallback kleur als code onbekend is
+        this.selectedColorCss = kleurMapCode[soortCode] ?? '#2f3f36';
+    }
+
+    setSoortId(id) {
+        this.selectedSoortId = id;
+    }
+
 
     createPoint(worldPosition) {
         const point = this.viewer.entities.add({
@@ -79,7 +107,7 @@ export class PolygonDrawer {
                 polygon: {
                     hierarchy: positionData,
                     material: new Cesium.ColorMaterialProperty(
-                        Cesium.Color.fromCssColorString('#2f3f36')
+                        Cesium.Color.fromCssColorString(this.selectedColorCss)
                     ),
                 },
             });
@@ -134,6 +162,13 @@ export class PolygonDrawer {
                     showMessage("Je kunt alleen binnen Spoordok tekenen");
                     return;
                 }
+
+                // Alleen blokkeren bij het beginnen van een nieuwe polygon
+                if (that.activeShapePoints.length === 0 && !that.selectedSoortId) {
+                    showMessage("Kies eerst een soort (klik op een icoontje).");
+                    return;
+                }
+
                 if (that.activeShapePoints.length === 0) {
                     that.floatingPoint = that.createPoint(earthPosition);
                     that.activeShapePoints.push(earthPosition);
@@ -217,9 +252,22 @@ export class PolygonDrawer {
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
         handler.setInputAction(function (event) {
+            // 1) Eerst: genoeg punten?
+            if (that.activeShapePoints.length < 3) {
+                showMessage("Teken minimaal 3 punten voor een polygon.");
+                return;
+            }
+
+            // 2) Daarna: soort gekozen?
+            if (!that.selectedSoortId) {
+                showMessage("Kies eerst een soort voordat je opslaat.");
+                return;
+            }
+
+            // 3) Daarna pas afronden + opslaan
             that.activeShapePoints.pop();
             const finalPolygonEntity = that.drawShape(that.activeShapePoints)
-            sendPolygonToBackend(that.activeShapePoints, finalPolygonEntity);
+            sendPolygonToBackend(that.activeShapePoints, finalPolygonEntity, that.selectedSoortId);
             that.viewer.entities.remove(that.floatingPoint);
             that.viewer.entities.remove(that.activeShape);
             that.floatingPoint = undefined;
@@ -277,7 +325,7 @@ export class PolygonDrawer {
     }
 }
 
-function sendPolygonToBackend(points, cesiumEntity) {
+function sendPolygonToBackend(points, cesiumEntity, soortId) {
     // Cesium Cartesian3 → simpel object {x, y, z}.
     // map: een array methode die elke element in de array langs gaat
     // en daarvan een nieuwe object maakt, dit hij opslaat in een nieuwe array.
@@ -301,7 +349,8 @@ function sendPolygonToBackend(points, cesiumEntity) {
         body: JSON.stringify({
             pointsJson: pointsJsonString,
             oppervlakte: `${areaM2.toFixed(0)} m²`,
-            hoogte: hoogte
+            hoogte: hoogte,
+            soortId: soortId
         })
     })
         .then(response => response.json())

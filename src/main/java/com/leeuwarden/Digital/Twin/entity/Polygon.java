@@ -17,8 +17,9 @@ public class Polygon {
     @Column(name = "hoogte", columnDefinition = "DOUBLE PRECISION")
     private double hoogte;
 
-    @Column(name = "soort", columnDefinition = "TEXT")
-    private String soort;
+    @ManyToOne
+    @JoinColumn(name = "soort_id" , nullable = true)
+    private Soort soort;
 
     public Polygon() {}
 
@@ -50,6 +51,11 @@ public class Polygon {
     public double getHoogte() { return hoogte; }
     public void setHoogte(double hoogte) { this.hoogte = hoogte; }
 
-    public String getSoort() { return soort; }
-    public void setSoort(String soort) { this.soort = soort; }
+    public Soort getSoort() {
+        return soort;
+    }
+
+    public void setSoort(Soort soort) {
+        this.soort = soort;
+    }
 }
