@@ -1,82 +1,114 @@
-import {initializeCesiumViewer} from './cesiumSettings.js';
-import {PolygonDrawer} from './createPolygon.js';
-import {areaFromDegreesArrayMeters} from './AreaCalculator.js';
-import {setupPolygonInfoHandler} from './inspectPolygon.js';
-import {initDoelenModal, initModalEdit, populateConfigs, populateDoelen} from './configuration.js';
-import { setupLLMAnalyzer } from './LLM.js'
-
+import { initializeCesiumViewer } from './cesiumSettings.js';
+import { PolygonDrawer } from './createPolygon.js';
+import { areaFromDegreesArrayMeters } from './AreaCalculator.js';
+import { setupPolygonInfoHandler } from './inspectPolygon.js';
+import { colorForSoortCode } from './soorten.js';
+import {
+    initDoelenModal,
+    initModalEdit,
+    populateConfigs,
+    populateDoelen
+} from './configuration.js';
+import { setupLLMAnalyzer } from './LLM.js';
 
 window.onload = setup;
 
+// Globale state (wordt gezet tijdens setup)
 let viewer;
 let polygonDrawer;
 
+// code -> soortId map (komt uit GET /soorten)
 let soortenByCode = {};
-let selectedSoortId = null; // de gekozen FK-id
-let selectedSoortCode = null;
+
+// Geselecteerde soort (wordt gezet door klikken op een icoontje)
+let selectedSoortId = null;   // FK-id die naar de backend gestuurd wordt
+let selectedSoortCode = null; // stabiele code (handig voor debug / uitbreidingen)
 
 async function setup() {
-
-    //Configuration page
+    // -----------------------------
+    // 1) UI: configuratie pagina
+    // -----------------------------
     populateConfigs();
     initModalEdit();
-
     populateDoelen();
     initDoelenModal();
 
+    // -----------------------------
+    // 2) Helpers: soorten laden + buttons koppelen
+    // -----------------------------
+    async function loadSoorten() {
+        // Haal soorten op uit de backend. Deze endpoint komt uit SoortController: @RequestMapping("/soorten") + @GetMapping
+        const res = await fetch("http://localhost:8080/soorten");
+        const soorten = await res.json(); // JSON -> JS object
+        // Maak een snelle lookup table: { "APPARTEMENT": 3, "WEGEN": 6, ... }
+        soortenByCode = Object.fromEntries(soorten.map(s => [s.code, s.soortId]));
+    }
+
     function setupSoortButtons() {
+        // Koppel click-events aan alle icoontjes met class ".soort-btn"
         document.querySelectorAll(".soort-btn").forEach(btn => {
             btn.addEventListener("click", () => {
-                const soortCode = btn.dataset.soortCode; // 1) Lees de stabiele code uit de HTML (moet exact matchen met data.sql codes)
-                const soortId = soortenByCode[soortCode]; // 2) Vertaal code -> soortId (soortId komt uit de database via GET /soorten)
+                // 1) Lees de stabiele code uit de HTML (data-soort-code="APPARTEMENT" etc.)
+                const soortCode = btn.dataset.soortCode;
 
-                // 3) Veiligheidscheck: als dit faalt, klopt je HTML code niet of /soorten is niet goed geladen
+                // 2) Vertaal code -> soortId (soortId komt uit database via loadSoorten())
+                const soortId = soortenByCode[soortCode];
+
+                // 3) Als dit faalt: HTML code mismatch of /soorten nog niet goed geladen
                 if (soortId == null) {
                     console.warn("Onbekende soortCode of soortId ontbreekt:", soortCode, soortenByCode);
                     return;
                 }
 
-                // 4) Opslaan (FK) + kleur zetten (beiden op basis van stabiele code)
+                // 4) Bewaar de keuze + geef door aan PolygonDrawer
+                selectedSoortCode = soortCode;
                 selectedSoortId = soortId;
-                polygonDrawer.setSoortId(soortId);
-                polygonDrawer.setSoortCode(soortCode);
+
+                polygonDrawer.setSoortId(soortId);     // voor opslaan (FK)
+                polygonDrawer.setSoortCode(soortCode); // voor kleur
             });
         });
     }
 
-    async function loadSoorten() {
-        const res = await fetch("http://localhost:8080/soorten");
-        const soorten = await res.json(); // JSON -> JS object
-        soortenByCode = Object.fromEntries(soorten.map(s => [s.code, s.soortId])); // array -> object map
-    }
-
+    // -----------------------------
+    // 3) Cesium init + PolygonDrawer
+    // -----------------------------
     viewer = initializeCesiumViewer("cesiumContainer");
-    window.viewer = viewer;
-
+    window.viewer = viewer; // handig om te debuggen in devtools
 
     polygonDrawer = new PolygonDrawer(viewer);
     setupPolygonInfoHandler(viewer);
 
+    // Belangrijk: eerst soorten laden (map vullen), daarna pas buttons gebruiken
     await loadSoorten();
     setupSoortButtons();
 
-    //LLM Analyzer
+    // -----------------------------
+    // 4) Extra tools
+    // -----------------------------
     setupLLMAnalyzer(1);
 
+    // -----------------------------
+    // 5) Bestaande polygons inladen en tekenen
+    // -----------------------------
     fetch('http://localhost:8080/polygons')
         .then(r => r.json())
         .then(polygons => {
             polygons.forEach(p => {
                 const points = JSON.parse(p.pointsJson);
-                const positions = points.map(pt =>
-                    new Cesium.Cartesian3(pt.x, pt.y, pt.z)
-                );
+                const positions = points.map(pt => new Cesium.Cartesian3(pt.x, pt.y, pt.z));
+
                 const oppNumber = parseFloat(p.oppervlakte);
+
+                const soortCode = p.soort?.code;
+                const hex = colorForSoortCode(soortCode);
+
                 const entity = viewer.entities.add({
                     polygon: {
                         hierarchy: positions,
+                        // Default kleur bij laden
                         material: new Cesium.ColorMaterialProperty(
-                            Cesium.Color.fromCssColorString('#2f3f36')
+                            Cesium.Color.fromCssColorString(hex)
                         ),
                         extrudedHeight: new Cesium.ConstantProperty(parseFloat(p.hoogte) || 0)
                     },
@@ -85,10 +117,14 @@ async function setup() {
                         oppervlakte: new Cesium.ConstantProperty(oppNumber || 0)
                     }
                 });
+
                 entity.polygonId = p.id;
             });
         });
 
+    // -----------------------------
+    // 6) Spoordok boundary polygon + oppervlakte tonen
+    // -----------------------------
     const coords = [
         5.787759928698073, 53.197831145908000,
         5.789123554275904, 53.197639959578440,
@@ -99,7 +135,7 @@ async function setup() {
         5.786410809746187, 53.197040324210970,
     ];
 
-    const SpoordokPolygon = viewer.entities.add({
+    viewer.entities.add({
         name: "Spoordok",
         polygon: {
             hierarchy: Cesium.Cartesian3.fromDegreesArray(coords),
