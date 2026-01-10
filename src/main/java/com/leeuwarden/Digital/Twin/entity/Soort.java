@@ -28,16 +28,13 @@ public class Soort {
 
     private Integer aantalMensen; // mag null zijn
 
-    @OneToMany(mappedBy = "soort", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Gebiedsdeel> gebiedsdeelen;
-
     @Column(nullable = false, unique = true)
     private String code;
 
     public Soort() {
     }
 
-    public Soort(Long soortId, String naam, double kostenPerMeter, double opbrengst, String eenheidstype, int leefbaarheidsScore, Integer aantalMensen, List<Gebiedsdeel> gebiedsdeelen) {
+    public Soort(Long soortId, String naam, double kostenPerMeter, double opbrengst, String eenheidstype, int leefbaarheidsScore, Integer aantalMensen) {
         this.soortId = soortId;
         this.naam = naam;
         this.kostenPerMeter = kostenPerMeter;
@@ -45,7 +42,6 @@ public class Soort {
         this.eenheidstype = eenheidstype;
         this.leefbaarheidsScore = leefbaarheidsScore;
         this.aantalMensen = aantalMensen;
-        this.gebiedsdeelen = gebiedsdeelen;
     }
 
     public Long getSoortId() {
@@ -102,14 +98,6 @@ public class Soort {
 
     public void setAantalMensen(Integer aantalMensen) {
         this.aantalMensen = aantalMensen;
-    }
-
-    public List<Gebiedsdeel> getGebiedsdeelen() {
-        return gebiedsdeelen;
-    }
-
-    public void setGebiedsdeelen(List<Gebiedsdeel> gebiedsdeelen) {
-        this.gebiedsdeelen = gebiedsdeelen;
     }
 
     public String getCode() {
