@@ -61,8 +61,16 @@ export class PolygonDrawer {
         this.activeShapePoints = [];
         this.activeShape = undefined;     // polygon/polyline entity tijdens tekenen
         this.floatingPoint = undefined;   // punt dat meebeweegt met de muis
-        this.pointEntities = [];          // vertex puntjes die we tekenen
+        this.pointEntities = [];// vertex puntjes die we tekenen
+
+        // wordt gebruikt voor drag-state
+        this.dragEntity = null;
+        this.dragStartWorld = null;
+        this.dragOriginalPositions = null;
+
         this.setupInputActions(); // Input handlers (muis/keyboard)
+
+
     }
 
     // -----------------------------
@@ -140,6 +148,20 @@ export class PolygonDrawer {
 
         // LEFT_CLICK: nieuw punt toevoegen / polygon starten
         handler.setInputAction(function (event) {
+            // 0) Als we op een bestaande polygon klikken: NIET tekenen
+            const picked = that.viewer.scene.pick(event.position);
+            if (Cesium.defined(picked)) {
+                const ent = picked.id; // <-- direct de entity gebruiken
+                if (ent && ent.polygon && ent.name !== "Spoordok") {
+                    // Hier kun je eventueel selecteren/highlighten
+                    return; // stop hier, dus geen nieuw punt
+                }
+            }
+
+            // 1) ALT/CTRL/SHIFT? dan zijn andere handlers aan de beurt
+            if (event.ctrlKey || event.altKey || event.shiftKey) {
+                return;
+            }
             const ray = that.viewer.camera.getPickRay(event.position);
             const earthPosition = that.viewer.scene.globe.pick(ray, that.viewer.scene);
 
@@ -237,6 +259,26 @@ export class PolygonDrawer {
 
         // MOUSE_MOVE: update het “floating” punt zolang er getekend wordt
         handler.setInputAction(function (event) {
+            // A) SLEPEN VAN BESTAANDE POLYGON (ALT + drag)
+            if (that.dragEntity && that.dragStartWorld && that.dragOriginalPositions) {
+                const ray2 = that.viewer.camera.getPickRay(event.endPosition);
+                const currentWorld = that.viewer.scene.globe.pick(ray2, that.viewer.scene);
+                if (Cesium.defined(currentWorld)) {
+                    const delta = Cesium.Cartesian3.subtract(
+                        currentWorld,
+                        that.dragStartWorld,
+                        new Cesium.Cartesian3()
+                    );
+
+                    const moved = that.dragOriginalPositions.map(p =>
+                        Cesium.Cartesian3.add(p, delta, new Cesium.Cartesian3())
+                    );
+
+                    that.dragEntity.polygon.hierarchy = new Cesium.PolygonHierarchy(moved);
+                }
+            }
+
+            // B) FLOATING PUNT TIJDENS TEKENEN
             if (!Cesium.defined(that.floatingPoint)) return;
 
             const ray = that.viewer.camera.getPickRay(event.endPosition);
@@ -305,6 +347,57 @@ export class PolygonDrawer {
 
             that.activeShapePoints = [];
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK, Cesium.KeyboardEventModifier.ALT);
+
+        // Bestaande polygon slepen
+        handler.setInputAction(function (event) {
+            const picked = that.viewer.scene.pick(event.position);
+            if (!Cesium.defined(picked)) return;
+
+            const entity = picked.id;
+            if (!entity || !entity.polygon) return;
+            if (entity.name === "Spoordok") return;
+
+            // Nog een keer ALT+RIGHT_CLICK op dezelfde entity = drag uit + opslaan
+            if (that.dragEntity === entity) {
+                // 1) huidige posities ophalen
+                const hierarchy = entity.polygon.hierarchy.getValue();
+                const positions = hierarchy.positions || hierarchy;
+
+                const simplePoints = positions.map(p => ({ x: p.x, y: p.y, z: p.z }));
+                const body = {
+                    pointsJson: JSON.stringify(simplePoints)
+                };
+
+                // 2) naar backend sturen (pas endpoint aan jouw API aan)
+                if (entity.polygonId) {
+                    fetch(`http://localhost:8080/polygons/${entity.polygonId}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(body)
+                    });
+                }
+
+                // 3) drag-state leegmaken
+                that.dragEntity = null;
+                that.dragStartWorld = null;
+                that.dragOriginalPositions = null;
+                return;
+            }
+
+            // Nieuwe drag starten
+            const ray = that.viewer.camera.getPickRay(event.position);
+            const startWorld = that.viewer.scene.globe.pick(ray, that.viewer.scene);
+            if (!Cesium.defined(startWorld)) return;
+
+            that.dragEntity = entity;
+            that.dragStartWorld = startWorld;
+
+            const hierarchy = entity.polygon.hierarchy.getValue();
+            const positions = hierarchy.positions || hierarchy;
+            that.dragOriginalPositions = positions.map(
+                p => new Cesium.Cartesian3(p.x, p.y, p.z)
+            );
+        }, Cesium.ScreenSpaceEventType.RIGHT_CLICK, Cesium.KeyboardEventModifier.ALT);
     }
 
     // -----------------------------
