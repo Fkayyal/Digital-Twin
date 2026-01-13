@@ -44,12 +44,11 @@ public class PolygonController {
         return polygonRepository.findAll();
     }
     @PutMapping("/{id}")
-    public Polygon updateHeight(@PathVariable Long id, @RequestBody Map<String, Double> update) {
+    public Polygon updatePolygon(@PathVariable Long id, @RequestBody PolygonRequestDTO updateDto) {
         Polygon polygon = polygonRepository.findById(id).orElseThrow();
-        polygon.setHoogte(update.get("hoogte"));
+        polygonMapper.updateEntityFromDto(updateDto, polygon);
         return polygonRepository.save(polygon);
     }
-
     @GetMapping("/{id}")
     public Polygon getPolygon(@PathVariable Long id) {
         return polygonRepository.findById(id).orElseThrow();

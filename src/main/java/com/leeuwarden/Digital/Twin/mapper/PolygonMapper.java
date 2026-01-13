@@ -33,6 +33,23 @@ public class PolygonMapper implements Mapper<PolygonRequestDTO, Polygon>{
         return polygon;
     }
 
+    public void updateEntityFromDto(PolygonRequestDTO dto, Polygon polygon) {
+        if (dto.getPointsJson() != null) {
+            polygon.setPointsJson(dto.getPointsJson());
+        }
+        if (dto.getOppervlakte() != null) {
+            polygon.setOppervlakte(dto.getOppervlakte());
+        }
+        // hoogte kun je altijd zetten, of ook optioneel maken met een Double in de DTO
+        polygon.setHoogte(dto.getHoogte());
+
+        if (dto.getSoortId() != null) {
+            Soort soort = soortRepository.findById(dto.getSoortId())
+                    .orElseThrow(() -> new IllegalArgumentException("Soort niet gevonden: " + dto.getSoortId()));
+            polygon.setSoort(soort);
+        }
+    }
+
     @Override
     public PolygonRequestDTO toDTO(Polygon polygon) {
         return null;
