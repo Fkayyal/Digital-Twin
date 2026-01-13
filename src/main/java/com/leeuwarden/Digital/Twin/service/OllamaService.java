@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leeuwarden.Digital.Twin.entity.Agent;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.http.MediaType;
@@ -12,7 +13,11 @@ import java.util.Map;
 
 @Service
 public class OllamaService {
-    private final WebClient webClient = WebClient.create("http://localhost:11434");
+    private final WebClient webClient;
+
+    public OllamaService(@Value("${OLLAMA_URL:http://localhost:11434}") String ollamaUrl) {
+        this.webClient = WebClient.create(ollamaUrl);  // ✅ Configurable!
+    }
 
     public String analyzeImage(String base64Image) {
         String prompt = """
@@ -33,13 +38,14 @@ Keep the justification factual, evidence-based, and succinct. Do not include any
         ObjectMapper mapper = new ObjectMapper();
 
         Map<String, Object> request = Map.of(
-                "model", "gemma3:4b",
+                "model", "llava:7b",
                 "messages", List.of(Map.of(
                         "role", "user",
                         "content", prompt,
                         "images", List.of(base64Image)
                 )),
-                "stream", false
+                "stream", false,
+                "options", Map.of("temperature", 0.1)
         );
 
         return webClient.post()
@@ -56,7 +62,6 @@ Keep the justification factual, evidence-based, and succinct. Do not include any
         Agent agent = new Agent();
         ObjectMapper mapper = new ObjectMapper();
 
-        // ✅ Fix: Sta unescaped control chars toe
         mapper.configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true);
 
         try {
@@ -68,7 +73,7 @@ Keep the justification factual, evidence-based, and succinct. Do not include any
             content = content.replaceAll("```json\\s*", "")
                     .replaceAll("\\s*```\\s*$", "")
                     .trim()
-                    .replace("\\\\n", "\n")  // \\n → echte newline voor leesbare justification
+                    .replace("\\\\n", "\n")
                     .replace("\\\\r", "");
 
             JsonNode innerJson = mapper.readTree(content);
@@ -80,5 +85,4 @@ Keep the justification factual, evidence-based, and succinct. Do not include any
         }
         return agent;
     }
-
 }

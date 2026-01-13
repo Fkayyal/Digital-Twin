@@ -7,7 +7,7 @@
 # FROM Soort;
 
 -- 2. Nieuwe SOORT‑records invoegen
-INSERT INTO Soort (code, naam, kosten_per_meter, opbrengst, eenheidstype, leefbaarheids_score, aantal_mensen)
+INSERT INTO soort (code, naam, kosten_per_meter, opbrengst, eenheidstype, leefbaarheids_score, aantal_mensen)
 VALUES ('VRIJSTAANDE_WONING', 'Vrijstaande woning', 500, 12, 'm3', 4, 5),
        ('RIJTJESWONING', 'Rijtjeswoning', 400, 8, 'm3', 6, 10),
        ('APPARTEMENT', 'Appartement', 300, 12, 'm3', 5, 6),
@@ -19,7 +19,7 @@ VALUES ('VRIJSTAANDE_WONING', 'Vrijstaande woning', 500, 12, 'm3', 4, 5),
 
 
 -- 3. Nieuwe DOEL‑records invoegen
-INSERT INTO Doel (Omschrijving, Aantal)
+INSERT INTO doel (Omschrijving, Aantal)
 VALUES ('Aantal inwoners dat binnen het gebied moet kunnen wonen', 3000),
        ('Aantal werkenden dat binnen het gebied moet kunnen werken', 500),
        ('Minimumpercentage van de oppervlakte dat uit natuur en groen moet bestaan', 20),
