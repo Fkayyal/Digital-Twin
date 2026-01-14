@@ -1,9 +1,11 @@
 package com.leeuwarden.Digital.Twin.controller;
 
 import com.leeuwarden.Digital.Twin.DTO.PolygonRequestDTO;
+import com.leeuwarden.Digital.Twin.DTO.PolygonStatsDTO;
 import com.leeuwarden.Digital.Twin.entity.Polygon;
 import com.leeuwarden.Digital.Twin.mapper.PolygonMapper;
 import com.leeuwarden.Digital.Twin.repository.PolygonRepository;
+import com.leeuwarden.Digital.Twin.service.PolygonStatisticsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,10 +21,12 @@ public class PolygonController {
     // Dependancy injection
     private final PolygonRepository polygonRepository;
     private final PolygonMapper polygonMapper;
+    private final PolygonStatisticsService polygonStatisticsService;
 
-    public PolygonController(PolygonRepository polygonRepository, PolygonMapper polygonMapper) {
+    public PolygonController(PolygonRepository polygonRepository, PolygonMapper polygonMapper, PolygonStatisticsService polygonStatisticsService) {
         this.polygonRepository = polygonRepository;
         this.polygonMapper = polygonMapper;
+        this.polygonStatisticsService = polygonStatisticsService;
     }
 
 
@@ -54,5 +58,44 @@ public class PolygonController {
         return polygonRepository.findById(id).orElseThrow();
     }
 
+    @GetMapping("/{id}/stats")
+    public PolygonStatsDTO getPolygonStats(@PathVariable Long id) {
+        Polygon polygon = polygonRepository.findById(id).orElseThrow();
+        return polygonStatisticsService.calculate(polygon);
+    }
 
+    @GetMapping("/stats")
+    public PolygonStatsDTO getAllPolygonStats() {
+        var polygons = polygonRepository.findAll();
+
+        double totaleEenheden = 0;
+        double totaleKosten = 0;
+        double totaleOpbrengst = 0;
+        double totaleMensen = 0;
+        double totaleLeefbaarheid = 0;
+
+        for (Polygon p : polygons) {
+            PolygonStatsDTO s = polygonStatisticsService.calculate(p);
+            totaleEenheden += s.getAantalEenheden();
+            totaleKosten += s.getTotaleKosten();
+            totaleOpbrengst += s.getTotaleOpbrengst();
+            totaleMensen += s.getAantalMensen();
+            totaleLeefbaarheid += s.getLeefbaarheidPunten();
+        }
+
+        double gemiddeldeLeefbaarheid = 0.0;
+        if (totaleEenheden > 0) {
+            gemiddeldeLeefbaarheid = totaleLeefbaarheid / totaleEenheden;
+        }
+
+        PolygonStatsDTO dto = new PolygonStatsDTO();
+        dto.setPolygonId(null); // niet relevant voor totaal
+        dto.setAantalEenheden(totaleEenheden);
+        dto.setTotaleKosten(totaleKosten);
+        dto.setTotaleOpbrengst(totaleOpbrengst);
+        dto.setAantalMensen(totaleMensen);
+        dto.setLeefbaarheidPunten(gemiddeldeLeefbaarheid);
+        return dto;
+    }
 }
+

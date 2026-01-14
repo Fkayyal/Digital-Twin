@@ -24,6 +24,46 @@ let soortenByCode = {};
 let selectedSoortId = null;   // FK-id die naar de backend gestuurd wordt
 let selectedSoortCode = null; // stabiele code (handig voor debug / uitbreidingen)
 
+export async function loadSpoordokStats() {
+    const res = await fetch("http://localhost:8080/polygons/stats");
+    const data = await res.json();
+
+    const statsTextEl = document.getElementById("stats-text");
+    const areaInfoEl = document.getElementById("areaInfo");
+
+    if (statsTextEl) {
+        statsTextEl.innerText = `Totaal aantal polygonen: ${data.aantal} | Bebouwd: ${data.bebouwdM2} m²`;
+    }
+
+    if (areaInfoEl) {
+        areaInfoEl.innerText = `Oppervlakte: ${data.oppervlakteSpoordok} m²`;
+    }
+    try {
+        const res = await fetch('http://localhost:8080/polygons/stats');
+        if (!res.ok) {
+            console.error('Fout bij ophalen stats:', res.status);
+            return;
+        }
+        const stats = await res.json();
+
+        const correctAantalMensen = stats.aantalMensen / 1000; // 5 -> 0,005
+
+        const text = `
+            Totale kosten: € ${stats.totaleKosten.toLocaleString('nl-NL', { maximumFractionDigits: 0 })}<br>
+            Totale opbrengst: € ${stats.totaleOpbrengst.toLocaleString('nl-NL', { maximumFractionDigits: 0 })}<br>
+            Verwacht aantal bewoners/medewerkers: ${correctAantalMensen.toLocaleString('nl-NL', { maximumFractionDigits: 0 })}<br>
+            Leefbaarheidspunten (totaal): ${stats.leefbaarheidPunten.toLocaleString('nl-NL', { maximumFractionDigits: 2 })}
+        `;
+
+        const el = document.getElementById('stats-text');
+        if (el) {
+            el.innerHTML = text;
+        }
+    } catch (e) {
+        console.error('Error bij laden Spoordok stats', e);
+    }
+}
+
 async function setup() {
     // -----------------------------
     // 1) UI: configuratie pagina
@@ -148,4 +188,9 @@ async function setup() {
     if (areaInfoEl) {
         areaInfoEl.textContent = `Oppervlakte Spoordok: ${areaM2.toFixed(0)} m²`;
     }
+
+    // -----------------------------
+    // 7) Statistieken Spoordok (alle polygonen)
+    // -----------------------------
+    await loadSpoordokStats();
 }

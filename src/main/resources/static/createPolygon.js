@@ -1,6 +1,8 @@
 ﻿import { areaFromCartesian3ArrayMeters } from "./AreaCalculator.js";
 import { showMessage } from "./ui.js";
 import { colorForSoortCode } from "./soorten.js";
+import { loadSpoordokStats } from './main.js';
+
 
 // =====================================================
 // Spoordok boundary (lon/lat) → hiermee blokkeren we tekenen buiten het gebied
@@ -346,6 +348,7 @@ export class PolygonDrawer {
             }
 
             that.activeShapePoints = [];
+            loadSpoordokStats();
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK, Cesium.KeyboardEventModifier.ALT);
 
         // Bestaande polygon slepen
@@ -467,5 +470,6 @@ function sendPolygonToBackend(points, cesiumEntity, soortId) {
         .then(savedPolygon => {
             // DB id op entity zetten zodat delete/hoogte-updates later naar juiste record gaan
             cesiumEntity.polygonId = savedPolygon.id;
+            loadSpoordokStats();
         });
 }
