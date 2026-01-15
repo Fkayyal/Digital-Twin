@@ -33,7 +33,7 @@ Keep the justification factual, evidence-based, and succinct. Do not include any
         ObjectMapper mapper = new ObjectMapper();
 
         Map<String, Object> request = Map.of(
-                "model", "gemma3:4b",
+                "model", "gemma2:2b",
                 "messages", List.of(Map.of(
                         "role", "user",
                         "content", prompt,

@@ -12,8 +12,12 @@ import java.util.List;
 @RequestMapping("/soorten")
 public class SoortController {
 
-    @Autowired
     private SoortRepository soortRepository;
+
+    public SoortController(SoortRepository soortRepository) {
+        this.soortRepository = soortRepository;
+    }
+
 
     @GetMapping
     public List<Soort> getAll(){
