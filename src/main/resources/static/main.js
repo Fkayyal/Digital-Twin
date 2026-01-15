@@ -50,7 +50,7 @@ export async function loadSpoordokStats() {
                 Totale kosten: € ${stats.totaleKosten.toLocaleString('nl-NL', { maximumFractionDigits: 0 })}<br>
                 Totale opbrengst: € ${stats.totaleOpbrengst.toLocaleString('nl-NL', { maximumFractionDigits: 0 })}<br>
                 Verwacht aantal bewoners/medewerkers: ${correctAantalMensen.toLocaleString('nl-NL', { maximumFractionDigits: 0 })}<br>
-                Leefbaarheidspunten (totaal): ${stats.leefbaarheidPunten.toLocaleString('nl-NL', { maximumFractionDigits: 2 })}
+                Leefbaarheid (gemiddeld 1-10): ${stats.leefbaarheidPunten.toLocaleString('nl-NL', { maximumFractionDigits: 2 })}
             `;
         }
     } catch (e) {
