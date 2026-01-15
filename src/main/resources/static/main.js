@@ -24,6 +24,40 @@ let soortenByCode = {};
 let selectedSoortId = null;   // FK-id die naar de backend gestuurd wordt
 let selectedSoortCode = null; // stabiele code (handig voor debug / uitbreidingen)
 
+export async function loadSpoordokStats() {
+    console.log("loadSpoordokStats() gestart");
+    try {
+        const res = await fetch("http://localhost:8080/polygons/stats");
+        console.log("GET /polygons/stats status:", res.status);
+        if (!res.ok) {
+            console.error("Stats endpoint faalt:", res.status);
+            return;
+        }
+        const stats = await res.json();
+        console.log("stats data:", stats);
+
+        const statsTextEl = document.getElementById("stats-text");
+        const areaInfoEl = document.getElementById("areaInfo");
+
+        if (areaInfoEl && typeof stats.oppervlakteSpoordok !== "undefined") {
+            areaInfoEl.innerText = `Oppervlakte: ${stats.oppervlakteSpoordok} m²`;
+        }
+
+        if (statsTextEl) {
+            const correctAantalMensen = (stats.aantalMensen ?? 0) / 1000;
+
+            statsTextEl.innerHTML = `
+                Totale kosten: € ${stats.totaleKosten.toLocaleString('nl-NL', { maximumFractionDigits: 0 })}<br>
+                Totale opbrengst: € ${stats.totaleOpbrengst.toLocaleString('nl-NL', { maximumFractionDigits: 0 })}<br>
+                Verwacht aantal bewoners/medewerkers: ${correctAantalMensen.toLocaleString('nl-NL', { maximumFractionDigits: 0 })}<br>
+                Leefbaarheidspunten (totaal): ${stats.leefbaarheidPunten.toLocaleString('nl-NL', { maximumFractionDigits: 2 })}
+            `;
+        }
+    } catch (e) {
+        console.error("Error bij laden Spoordok stats", e);
+    }
+}
+
 async function setup() {
     // -----------------------------
     // 1) UI: configuratie pagina
@@ -148,4 +182,9 @@ async function setup() {
     if (areaInfoEl) {
         areaInfoEl.textContent = `Oppervlakte Spoordok: ${areaM2.toFixed(0)} m²`;
     }
+
+    // -----------------------------
+    // 7) Statistieken Spoordok (alle polygonen)
+    // -----------------------------
+    await loadSpoordokStats();
 }

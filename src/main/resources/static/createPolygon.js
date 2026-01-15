@@ -1,6 +1,8 @@
 ﻿import { areaFromCartesian3ArrayMeters } from "./AreaCalculator.js";
 import { showMessage } from "./ui.js";
 import { colorForSoortCode } from "./soorten.js";
+import { loadSpoordokStats } from './main.js';
+
 
 // =====================================================
 // Spoordok boundary (lon/lat) → hiermee blokkeren we tekenen buiten het gebied
@@ -222,7 +224,12 @@ export class PolygonDrawer {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ hoogte: nieuweHoogte })
-                });
+                })
+                    .then(res => {
+                        console.log("PUT /polygons status:", res.status);
+                        loadSpoordokStats();
+                    })
+                    .catch(err => console.error("Fout bij hoogte-update:", err));
             }
             console.log("Hoogte opgeslagen:", nieuweHoogte);
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK, Cesium.KeyboardEventModifier.CTRL);
@@ -252,7 +259,12 @@ export class PolygonDrawer {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ hoogte: nieuweHoogte })
-                });
+                })
+                    .then(res => {
+                        console.log("PUT /polygons status:", res.status);
+                        loadSpoordokStats();
+                    })
+                    .catch(err => console.error("Fout bij hoogte-update:", err));
             }
             console.log("Hoogte opgeslagen:", nieuweHoogte);
         }, Cesium.ScreenSpaceEventType.RIGHT_CLICK, Cesium.KeyboardEventModifier.CTRL);
@@ -342,7 +354,12 @@ export class PolygonDrawer {
 
             // Als het een opgeslagen polygon is: verwijder ook uit de database
             if (entity.polygonId) {
-                fetch(`http://localhost:8080/polygons/${entity.polygonId}`, { method: "DELETE" });
+                fetch(`http://localhost:8080/polygons/${entity.polygonId}`, { method: "DELETE" })
+                    .then(res => {
+                        console.log("DELETE /polygons status:", res.status);
+                        loadSpoordokStats();          // refresh pas na succesvolle delete
+                    })
+                    .catch(err => console.error("Fout bij verwijderen polygon:", err));;
             }
 
             that.activeShapePoints = [];
@@ -451,5 +468,6 @@ function sendPolygonToBackend(points, cesiumEntity, soortId) {
         .then(savedPolygon => {
             // DB id op entity zetten zodat delete/hoogte-updates later naar juiste record gaan
             cesiumEntity.polygonId = savedPolygon.id;
+            loadSpoordokStats();
         });
 }
