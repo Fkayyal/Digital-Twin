@@ -4,6 +4,7 @@ import com.leeuwarden.Digital.Twin.DTO.PolygonRequestDTO;
 import com.leeuwarden.Digital.Twin.entity.Polygon;
 import com.leeuwarden.Digital.Twin.mapper.PolygonMapper;
 import com.leeuwarden.Digital.Twin.repository.PolygonRepository;
+import com.leeuwarden.Digital.Twin.service.PolygonStatisticsService;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -17,7 +18,8 @@ class PolygonControllerTest {
 
     private final PolygonRepository polygonRepository = mock(PolygonRepository.class);
     private final PolygonMapper polygonMapper = mock(PolygonMapper.class);
-    private final PolygonController controller = new PolygonController(polygonRepository, polygonMapper);
+    private final PolygonStatisticsService polygonStatisticsService = mock(PolygonStatisticsService.class);
+    private final PolygonController controller = new PolygonController(polygonRepository, polygonMapper,  polygonStatisticsService);
 
     @Test
     void createPolygon_gebruiktMapperEnSave() {
