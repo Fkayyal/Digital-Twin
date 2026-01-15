@@ -30,6 +30,7 @@
                             Id: <span id="infoId">...</span><br>
                             Oppervlakte: <span id="infoOppervlakte">...</span><br>
                             Hoogte: <span id="infoHoogte">...</span><br>
+                            <span id="infoStats"></span><br>
                         </p>
                     </div>
                 </div>
@@ -39,10 +40,10 @@
                     <div class="col-12">
                         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true"><i class="bi bi-pen fs-6"></i> edit</button>
+                                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true"><i class="bi bi-pen fs-6"></i> Edit</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="bi bi-bar-chart fs-6"></i> stats</button>
+                                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false"><i class="bi bi-bar-chart fs-6"></i> Stats</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false"><i class="bi bi-robot"></i> AI agent</button>
@@ -157,13 +158,9 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-12">
-                                        <p><span class="fw-bold pb-3">Statistieken </span><br>
-                                            Bewoners: ...<br>
-                                            Werkenden: ...<br>
-                                            Natuur & Groen: ...<br>
-                                            Bebouwing bedrijven: ...<br>
-                                            Parkeerplaatsen: ...<br>
-                                            Score: ...
+                                        <p>
+                                            <span class="fw-bold pb-3">Statistieken Spoordok</span><br>
+                                            <span id="stats-text"></span><br>
                                         </p>
                                     </div>
                                 </div>
