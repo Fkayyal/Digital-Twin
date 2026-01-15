@@ -25,42 +25,36 @@ let selectedSoortId = null;   // FK-id die naar de backend gestuurd wordt
 let selectedSoortCode = null; // stabiele code (handig voor debug / uitbreidingen)
 
 export async function loadSpoordokStats() {
-    const res = await fetch("http://localhost:8080/polygons/stats");
-    const data = await res.json();
-
-    const statsTextEl = document.getElementById("stats-text");
-    const areaInfoEl = document.getElementById("areaInfo");
-
-    if (statsTextEl) {
-        statsTextEl.innerText = `Totaal aantal polygonen: ${data.aantal} | Bebouwd: ${data.bebouwdM2} m²`;
-    }
-
-    if (areaInfoEl) {
-        areaInfoEl.innerText = `Oppervlakte: ${data.oppervlakteSpoordok} m²`;
-    }
+    console.log("loadSpoordokStats() gestart");
     try {
-        const res = await fetch('http://localhost:8080/polygons/stats');
+        const res = await fetch("http://localhost:8080/polygons/stats");
+        console.log("GET /polygons/stats status:", res.status);
         if (!res.ok) {
-            console.error('Fout bij ophalen stats:', res.status);
+            console.error("Stats endpoint faalt:", res.status);
             return;
         }
         const stats = await res.json();
+        console.log("stats data:", stats);
 
-        const correctAantalMensen = stats.aantalMensen / 1000; // 5 -> 0,005
+        const statsTextEl = document.getElementById("stats-text");
+        const areaInfoEl = document.getElementById("areaInfo");
 
-        const text = `
-            Totale kosten: € ${stats.totaleKosten.toLocaleString('nl-NL', { maximumFractionDigits: 0 })}<br>
-            Totale opbrengst: € ${stats.totaleOpbrengst.toLocaleString('nl-NL', { maximumFractionDigits: 0 })}<br>
-            Verwacht aantal bewoners/medewerkers: ${correctAantalMensen.toLocaleString('nl-NL', { maximumFractionDigits: 0 })}<br>
-            Leefbaarheidspunten (totaal): ${stats.leefbaarheidPunten.toLocaleString('nl-NL', { maximumFractionDigits: 2 })}
-        `;
+        if (areaInfoEl && typeof stats.oppervlakteSpoordok !== "undefined") {
+            areaInfoEl.innerText = `Oppervlakte: ${stats.oppervlakteSpoordok} m²`;
+        }
 
-        const el = document.getElementById('stats-text');
-        if (el) {
-            el.innerHTML = text;
+        if (statsTextEl) {
+            const correctAantalMensen = (stats.aantalMensen ?? 0) / 1000;
+
+            statsTextEl.innerHTML = `
+                Totale kosten: € ${stats.totaleKosten.toLocaleString('nl-NL', { maximumFractionDigits: 0 })}<br>
+                Totale opbrengst: € ${stats.totaleOpbrengst.toLocaleString('nl-NL', { maximumFractionDigits: 0 })}<br>
+                Verwacht aantal bewoners/medewerkers: ${correctAantalMensen.toLocaleString('nl-NL', { maximumFractionDigits: 0 })}<br>
+                Leefbaarheidspunten (totaal): ${stats.leefbaarheidPunten.toLocaleString('nl-NL', { maximumFractionDigits: 2 })}
+            `;
         }
     } catch (e) {
-        console.error('Error bij laden Spoordok stats', e);
+        console.error("Error bij laden Spoordok stats", e);
     }
 }
 

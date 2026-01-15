@@ -27,10 +27,14 @@ public class PolygonStatisticsService {
         String oppStr = polygon.getOppervlakte();
 
         if (oppStr != null && !oppStr.isBlank()) {
-            // alles wat geen cijfer of punt is eruit halen
-            String numeric = oppStr.replaceAll("[^0-9.]", "");
+            String numeric = oppStr.replaceAll("[^0-9.]", ""); // laat alleen cijfers en punt over
             if (!numeric.isBlank()) {
-                oppervlakte = Double.parseDouble(numeric);
+                try {
+                    oppervlakte = Double.parseDouble(numeric);
+                } catch (NumberFormatException e) {
+                    System.out.println("Kan oppervlakte niet parsen voor polygon " + polygon.getId()
+                            + " oppStr='" + oppStr + "' numeric='" + numeric + "'");
+                }
             }
         }
         double hoogte = polygon.getHoogte();
@@ -55,7 +59,8 @@ public class PolygonStatisticsService {
 
         double kostenPerMeter      = soort.getKostenPerMeter();
         double opbrengstPercentage = soort.getOpbrengst() / 100 ;
-        double mensenPerEenheid    = soort.getAantalMensen();
+        Integer mensenPerEenheidObj = soort.getAantalMensen(); // mag null zijn
+        double mensenPerEenheid     = mensenPerEenheidObj != null ? mensenPerEenheidObj : 0.0;
         double leefbaarheidPerEenh = soort.getLeefbaarheidsScore();
 
         double totaleKosten    = aantalEenheden * kostenPerMeter;
