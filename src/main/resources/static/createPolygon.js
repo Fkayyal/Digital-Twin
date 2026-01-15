@@ -409,22 +409,6 @@ export class PolygonDrawer {
         const next = Math.min(300, Math.max(0, current + delta)); // 0..300 clamp
         basePolygon.polygon.extrudedHeight = new Cesium.ConstantProperty(next);
     }
-
-    // -----------------------------
-    // Helper: huidige “teken” polygon opruimen (zonder opslaan)
-    // -----------------------------
-
-    deleteLastPolygon() {
-        if (this.activeShape) {
-            this.viewer.entities.remove(this.activeShape);
-            this.activeShape = undefined;
-        }
-        if (this.floatingPoint) {
-            this.viewer.entities.remove(this.floatingPoint);
-            this.floatingPoint = undefined;
-        }
-        this.activeShapePoints = [];
-    }
 }
 
 // =====================================================

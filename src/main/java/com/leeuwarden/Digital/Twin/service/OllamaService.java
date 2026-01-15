@@ -62,6 +62,7 @@ Keep the justification factual, evidence-based, and succinct. Do not include any
         Agent agent = new Agent();
         ObjectMapper mapper = new ObjectMapper();
 
+        // ✅ Fix: Sta unescaped control chars toe
         mapper.configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true);
 
         try {
@@ -85,4 +86,5 @@ Keep the justification factual, evidence-based, and succinct. Do not include any
         }
         return agent;
     }
+
 }
