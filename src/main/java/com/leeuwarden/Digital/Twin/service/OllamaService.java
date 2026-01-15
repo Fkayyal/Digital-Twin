@@ -15,8 +15,8 @@ import java.util.Map;
 public class OllamaService {
     private final WebClient webClient;
 
-    public OllamaService(@Value("${OLLAMA_URL:http://localhost:11434}") String ollamaUrl) {
-        this.webClient = WebClient.create(ollamaUrl);  // ✅ Configurable!
+    public OllamaService(@Value("${OLLAMA_giURL:http://localhost:11434}") String ollamaUrl) {
+        this.webClient = WebClient.create(ollamaUrl);
     }
 
     public String analyzeImage(String base64Image) {
@@ -62,7 +62,7 @@ Keep the justification factual, evidence-based, and succinct. Do not include any
         Agent agent = new Agent();
         ObjectMapper mapper = new ObjectMapper();
 
-        // ✅ Fix: Sta unescaped control chars toe
+        //Sta unescaped control chars toe
         mapper.configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true);
 
         try {
