@@ -112,3 +112,10 @@ generated/
 
 # Niet committen: lokale Spring config
 src/main/resources/application.properties
+
+# Docker
+src/main/resources/application-docker.properties
+docker-compose.yml
+Dockerfile
+init-db.sql
+pom.xml
