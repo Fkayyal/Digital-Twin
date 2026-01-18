@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8.4
+    container_name: digital-twin-db
+    environment:
+      MYSQL_ROOT_PASSWORD: Test@1234!
+      MYSQL_DATABASE: DigitalTwin
+      MYSQL_USER: DigitalTwin
+      MYSQL_PASSWORD: Test@1234!
+    ports:
+      - "13306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./src/main/resources/static/data.sql:/docker-entrypoint-initdb.d/data.sql:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: digital-twin-app-test
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/DigitalTwin?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: DigitalTwin
+      SPRING_DATASOURCE_PASSWORD: Test@1234!
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    restart: unless-stopped
+
+volumes:
+  mysql-data:
